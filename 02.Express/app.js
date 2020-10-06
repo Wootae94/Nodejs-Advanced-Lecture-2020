@@ -1,12 +1,14 @@
 const express = require('express');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+
 const view = require('./view/index');
 const template = require('./view/template');
 const util = require('util');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
+
 
 app.get('/', (req,res) => {
     fs.readdir('data', function (error, filelist) {
@@ -48,10 +50,11 @@ app.post('/create',  (req,res) => {
     let description = req.body.description;
     let filepath = 'data/' + subject + '.txt';
     fs.writeFile(filepath,description, error => {
-        let encoded= encodeURI( `/id/${subject}`);
-        res.status(302).redirect(encoded);
+        res.status(302).redirect(`/id/${subject}`);
     });
 });
+    
+
 app.get('/delete/id/:id',  (req,res) => {
     fs.readdir('data', function (error, filelist) {
         let subject = req.params.id;
@@ -94,8 +97,7 @@ app.post('/update',  (req,res) => {
             if(original !== subject) { 
                 fs.renameSync(filepath, `data/${subject}.txt`);
             } 
-            let encoded= encodeURI( `/id/${subject}`);
-            res.status(302).redirect(encoded);
+            res.status(302).redirect(`/id/${subject}`);
         });
     });
 

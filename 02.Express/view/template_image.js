@@ -29,7 +29,7 @@ module.exports= {
     },
     createForm: function(){
         return `
-        <form method ="POST" action="/create">
+        <form method ="POST" action="/create" enctype="multipart/form-data">
             <table>
                 <tr>
                     <td><label>제목</label></td>
@@ -39,8 +39,12 @@ module.exports= {
                     <td><label>내용</label></td>
                     <td><textarea name ="description" cols="40" rows="5"></textarea></td>
                 </tr>
+                <tr>
+                    <td><label>사진</label></td>
+                    <td><input type="file" name="image"></td>
+                </tr>
                 <tr colspan="2">
-                <td><input type="submit" value="생성" > </td>
+                <td><input type="submit" value="생성" style = "text-align:center" > </td>
                 </tr>
                 
             </table>
@@ -58,7 +62,7 @@ module.exports= {
     },
     updateForm: function(subject,description){
         return `
-        <form method ="POST" action="/update">
+        <form method ="POST" action="/update" enctype="multipart/form-data">
         <input type="hidden" name="original" value=${subject}>
         <table>
             <tr>
@@ -68,6 +72,10 @@ module.exports= {
             <tr>
                 <td><label>내용</label></td>
                 <td><textarea name ="description" cols="40" rows="5">${description}</textarea></td>
+            </tr>
+            <tr>
+                <td><label>사진</label></td>
+                <td><input type="file" name="image"></td>
             </tr>
             <tr colspan="2">
             <td><input type="submit" value="수정"> </td>

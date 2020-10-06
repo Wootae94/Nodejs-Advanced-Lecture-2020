@@ -1,14 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser')
-//const multipart = require('connect-multiparty')
-const multer = require('multer');
+const multipart = require('connect-multiparty')
 const fs = require('fs');
 const util = require('util');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(multipart({uploadDir: __dirname + '/public/upload'}))
-var upload = multer({dest: __dirname + '/public/upload'});
 app.get('/',(req,res) => {
     fs.readFile('10.fileform.html','utf8',(error,data) => {
         res.send(data);
