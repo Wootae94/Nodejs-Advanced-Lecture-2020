@@ -1,16 +1,20 @@
 const bodyParser = require('body-parser')
 const express = require('express');
-const { deleteSong } = require('./db/db-module');
 const app = express();
 const dm = require('./db/db-module');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
-    dm.getAllLists(rows => {
+    /*  dm.getAllLists(rows => {
         const view = require('./view/list');
         let html = view.mainForm(rows);
         res.end(html);
-    });
+    }); */
+    dm.getJoinLists(rows => {
+        const view = require('./view/join');
+        let html = view.JoinForm(rows);
+        res.end(html);
+});
 });
 
 app.get('/insert', (req, res) => {

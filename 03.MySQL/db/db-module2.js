@@ -21,7 +21,8 @@ module.exports = {
     },
     getAllLists: function (callback) {
         let conn = this.getConnection();
-        let sql = 'SELECT * FROM song ORDER BY sid DESC LIMIT 10;';
+        let sql = `SELECT ggid, NAME, DATE_FORMAT(debut,'%Y-%m-%d') as debut FROM girl_group ORDER BY ggid DESC 
+        LIMIT 5;`;
         conn.query(sql, function (error, rows, fields) {
             if (error)
                 console.log(error);
@@ -31,11 +32,11 @@ module.exports = {
     }, getJoinLists: function (callback) {
         let conn = this.getConnection();
         let sql = 
-        `SELECT song.sid,song.title,gg.NAME,song.lyrics FROM song 
-        left JOIN girl_group AS gg
+        `SELECT gg.ggid,gg.NAME,DATE_FORMAT(gg.debut,'%Y-%m-%d') as debut,song.title FROM girl_group AS gg 
+        left JOIN song
         ON song.sid=gg.hit_song_id
-        ORDER BY song.sid DESC 
-        LIMIT 10
+        ORDER BY gg.ggid DESC 
+        LIMIT 5
         ;`;
         conn.query(sql, function (error, rows, fields) {
             if (error)
@@ -44,9 +45,9 @@ module.exports = {
         });
         conn.end();
     },
-    insertSong: function (params, callback) {
+    insertGroup: function (params, callback) {
         let conn = this.getConnection();
-        let sql = `insert into song(title,lyrics) values(? ,?)`;
+        let sql = `insert into girl_group(NAME,debut) values(? ,?)`;
 
         conn.query(sql, params, function (error, rows, fields) {
             if (error)
@@ -55,30 +56,31 @@ module.exports = {
         });
         conn.end();
     },
-    deleteSong: function (sid, callback) {
+    deleteGroup: function (ggid, callback) {
         let conn = this.getConnection();
-        let sql = `delete from song where sid=?;`;
+        let sql = `delete from girl_group where ggid=?;`;
 
-        conn.query(sql, sid, function (error, rows, fields) {
+        conn.query(sql, ggid, function (error, rows, fields) {
             if (error)
                 console.log(error);
             callback();
         });
         conn.end();
     },
-    getSong:function(sid,callback){
+    getGroup:function(ggid,callback){
         let conn = this.getConnection();
-        let sql = 'SELECT * FROM song where sid = ?;';
-        conn.query(sql, sid,function (error, rows, fields) {
+        let sql = `SELECT ggid, NAME, DATE_FORMAT(debut,'%Y-%m-%d') as debut FROM girl_group ORDER BY ggid DESC 
+        LIMIT 5;`;
+        conn.query(sql, ggid,function (error, rows, fields) {
             if (error)
                 console.log(error);
             callback(rows[0]);     // 주의할 것
         });
         conn.end();
     },
-    updateSong: function (params, callback) {
+    updateGroup: function (params, callback) {
         let conn = this.getConnection();
-        let sql = `update song set title=?,lyrics=? where sid=?;`;
+        let sql = `update girl_group set NAME=?,debut=? where ggid=?;`;
         conn.query(sql, params, function (error, rows, fields) {
             if (error)
                 console.log(error);
