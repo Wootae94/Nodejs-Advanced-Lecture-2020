@@ -2,7 +2,7 @@ mysql.json
 package-lock.json
 tmp/
 sessions/
-
+fontawesome-free-5.15.1-web/
 # Logs
 logs
 *.log
