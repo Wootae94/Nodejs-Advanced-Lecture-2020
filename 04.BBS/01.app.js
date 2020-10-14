@@ -3,8 +3,10 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const Filestore = require('session-file-store')(session);
-
-
+const bRouter = require('./02.bbsRouter');
+const uRouter = require('./03.userRouter');
+const fs = require('fs');
+const { data } = require('jquery');
 const app = express();
 app.use('/bootstrap',express.static(__dirname+'/node_modules/bootstrap/dist'));
 app.use('/popper',express.static(__dirname+'/node_modules/@poperjs/core/dist/umd'));
@@ -18,11 +20,32 @@ app.use(session({
     saveUninitialized: true,
     store: new Filestore({ logfn: function () { } })
 }));
+app.use('/user', uRouter);
+app.use('/bbs', bRouter);
 
 app.get('/',(req,res)=>{
-    const view = require('./view/test');
-    let html = view.test();
+   
+    res.redirect('/home');
+});
+
+app.get('/home',(req,res)=>{
+    const view = require('./view/home');
+    let html = view.home();
     res.send(html);
+});
+
+app.get('/login',(req,res)=>{
+    const view = require('./view/login');
+    let html = view.loginForm();
+    res.send(html); 
+});
+
+app.post('/login',(req,res)=>{
+
+});
+
+app.get('/logout',(req,res)=>{
+
 });
 
 app.listen(3000, () => {

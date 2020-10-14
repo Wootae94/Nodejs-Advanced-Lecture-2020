@@ -21,7 +21,7 @@ module.exports = {
     getAllLists: function (callback) {
         let conn = this.getConnection();
         let sql = `SELECT uid,uname,date_format(regDate,'%Y-%m-%d %T') AS regDate
-                    FROM users WHERE isDeleted = 0
+                    FROM users03 WHERE isDeleted = 0
                     ORDER BY regDate LIMIT 10;`;
         conn.query(sql, function (error, rows, fields) {
             if (error)
@@ -32,7 +32,7 @@ module.exports = {
     },
     getUserInfo: function(uid,callback){
         let conn = this.getConnection();
-        let sql = `select * from users where uid like ?;`;
+        let sql = `select * from users03 where uid like ?;`;
         conn.query(sql, uid, function (error, results, fields) {
             if (error)
                 console.log(error);
@@ -42,7 +42,7 @@ module.exports = {
     },
     deleteUser: function(uid,callback){
         let conn = this.getConnection();
-        let sql = `update users set isDeleted=1 where uid=?;`;
+        let sql = `update users03 set isDeleted=1 where uid=?;`;
         conn.query(sql, uid,function (error, fields) {
             if (error)
                 console.log(error);
@@ -52,7 +52,7 @@ module.exports = {
     },
     updateUser: function(params,callback){
         let conn = this.getConnection();
-        let sql = `update users set pwd=? where uid=?;`;
+        let sql = `update users03 set pwd=? where uid=?;`;
         conn.query(sql, params,function (error, fields) {
             if (error)
                 console.log(error);
