@@ -6,8 +6,8 @@ module.exports.mainForm = function (rows,uname) {
                         <td>${row.uname}</td>
                         <td>${row.regDate}</td>
                         <td>
-                            <a href="#">수정</a>
-                            <a href="#">삭제</a>
+                            <a href="/update/${row.uid}">수정</a>
+                            <a href="/delete/${row.uid}">삭제</a>
                         </td>
                     </tr>`;
     }

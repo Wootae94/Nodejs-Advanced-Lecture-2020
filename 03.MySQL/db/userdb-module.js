@@ -2,8 +2,6 @@ const fs = require('fs');
 const mysql = require('mysql');
 let info = fs.readFileSync('./mysql.json', 'utf8');
 let config = JSON.parse(info);
-const crypto = require('crypto');
-
 module.exports = {
     getConnection: function () {
         let conn = mysql.createConnection({
@@ -42,9 +40,24 @@ module.exports = {
         });
         conn.end();
     },
-    generateHash: function (something){
-        let shasum = crypto.createHash('sha256');  
-        shasum.update(something);
-        return shasum.digest('base64'); 
+    deleteUser: function(uid,callback){
+        let conn = this.getConnection();
+        let sql = `update users set isDeleted=1 where uid=?;`;
+        conn.query(sql, uid,function (error, fields) {
+            if (error)
+                console.log(error);
+            callback();
+    });
+    conn.end();
+    },
+    updateUser: function(params,callback){
+        let conn = this.getConnection();
+        let sql = `update users set pwd=? where uid=?;`;
+        conn.query(sql, params,function (error, fields) {
+            if (error)
+                console.log(error);
+            callback();
+    });
+    conn.end();
     }
-}
+};

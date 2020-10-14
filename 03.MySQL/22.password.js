@@ -21,8 +21,8 @@ console.log('1234:' , output);
 console.log(output.length);
 conn.connect();
 
-let sql = `insert into users(uid,pwd,name) values(?,?,?);`;
-let params = [ 'sylee', output,'이수연' ]
+let sql = `insert into users(uid,pwd,uname) values(?,?,?);`;
+let params = ['twkim', output,'김태우' ]
 conn.query(sql, params, function(error,rows,fields){
     if(error)
         console.log(error);;
