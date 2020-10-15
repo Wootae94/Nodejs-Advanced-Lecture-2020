@@ -12,9 +12,9 @@ const dm = require('./db/db-modules');
 const am = require('./view/userAlertMsg');
 const ut = require('./04.utill');
 
-app.use('/bootstrap',express.static(__dirname+'/node_modules/bootstrap/dist'));
-app.use('/popper',express.static(__dirname+'/node_modules/@poperjs/core/dist/umd'));
-app.use('/jquery',express.static(__dirname+'/node_modules/jquery/dist/'));
+app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist'));
+app.use('/popper', express.static(__dirname + '/node_modules/@poperjs/core/dist/umd'));
+app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('1q2w3e4r5t6y'));
@@ -27,23 +27,21 @@ app.use(session({
 app.use('/user', uRouter);
 app.use('/bbs', bRouter);
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.redirect('/home');
 });
 
-app.get('/home',ut.isLoggedIn,(req,res)=>{
-    const view = require('./view/home');
-    let html = view.mainForm(req.session.uid);
+app.get('/home', ut.isLoggedIn, (req, res) => {
+    res.redirect('/bbs/list')
+});
+
+app.get('/login', (req, res) => {
+    const view = require('./view/login');
+    let html = view.loginForm();
     res.send(html);
 });
 
-app.get('/login',(req,res)=>{
-    const view = require('./view/login');
-    let html = view.loginForm();
-    res.send(html); 
-});
-
-app.post('/login',(req,res)=>{
+app.post('/login', (req, res) => {
     let uid = req.body.uid;
     let pwd = req.body.pwd;
     let pwdHash = ut.generateHash(pwd);
@@ -51,7 +49,7 @@ app.post('/login',(req,res)=>{
         if (result === undefined) {
             let html = am.alertMsg(`Login 실패 : uid ${uid} 이/가 없습니다.`, '/login')
             res.send(html);
-        } else if (uid === 'admin'){
+        } else if (uid === 'admin') {
             if (result.pwd === pwdHash) {
                 req.session.uid = uid;
                 req.session.uname = result.uname;
@@ -59,7 +57,7 @@ app.post('/login',(req,res)=>{
                 req.session.save(function () {
                     res.redirect('/user/admin/list');
                 });
-            } 
+            }
         } else {
             if (result.pwd === pwdHash) {
                 req.session.uid = uid;
@@ -74,11 +72,9 @@ app.post('/login',(req,res)=>{
             };
         };
     });
-
-
 });
 
-app.get('/logout',(req,res)=>{
+app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/home');
 });

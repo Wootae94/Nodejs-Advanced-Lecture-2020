@@ -2,42 +2,46 @@
 const template = require('./template');
 const templateLogout = require('./templateLogout');
 
-module.exports.listForm = function (rows) {
+module.exports.bbsForm = function (rows,user) {
     let tableRow = ''
     for (let row of rows) {
-        tableRow += `<tr>
+        tableRow += `<tr class="clickable text-center" 
+        onclick="location='/bbs/view/bid/${row.bid}'">
+                        <td>${row.bid}</td>
+                        <td>${row.title}</td>
                         <td>${row.uid}</td>
-                        <td>${row.uname}</td>
-                        <td>${row.regDate}</td>
-                        <td>
-                            <a href="/user/update/${row.uid}">수정</a>
-                            <a href="/user/delete/${row.uid}">삭제</a>
-                        </td>
+                        <td>${row.modTime}</td>
+                        <td>${row.viewCount}</td>
                     </tr>`;
     }
     return `
     
-    ${templateLogout.header()}
+    ${templateLogout.header(user)}
     <div class="container" style="margin-top: 90px;">  
     <h2>게시판</h2>
     <hr>
     <div class="row">
-    <div class="col-3"></div>
-    <div class="col-6">
-            <table class="table table-borderless">
-                <tr>
-                    <th>uid</th>
-                    <th>이름</th>
-                    <th>등록일</th>
-                    <th>액션</th>
-                </tr>
+    <div class="col-1"></div>
+    <div class="col-10">
+            <table class="table table-borderless table-hover">
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>글쓴이</th>
+                        <th>작성일</th>
+                        <th>조회수</th>
+                    </tr>
+                </thead>
+                <tbody>
                      ${tableRow}
-        
+                </tbody>
             </table>
     </div>
-    <div class="col-3"></div>
+    <div class="col-1"></div>
     </div>
     </div>
+    
     ${template.footer()}
     `
 };

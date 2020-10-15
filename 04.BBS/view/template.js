@@ -15,7 +15,7 @@ module.exports = {
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="/home">
             <img src="/img/logo.png" alt="호서직업능력개발원"
                 style="height: 40px; margin-left: 50px; margin-right: 100px;">
         </a>
