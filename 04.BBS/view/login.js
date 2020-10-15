@@ -7,8 +7,7 @@ module.exports.loginForm = function () {
     <style>
         /* Make the image fully responsive */
         .carousel-inner img {
-           
-            height: 100%
+            height: 100
         }
     </style>
     <div class="container" style="margin-top: 90px;">  
@@ -51,39 +50,46 @@ module.exports.loginForm = function () {
         <div class="col-3"></div>
         <div class="col-6">
             <div class="container">
-                <form class="form" action="/login" method="POST">
-                    <table class="table table-borderless">
-                        <tbody>
-                            <tr>
-                                <td>
-                                  <label for="uid" class="col-form-label">사용자 ID </label>
-                                </td>
-                                <td>
-                                  <input type="text" class="form-control" id="uid" name="uid" placeholder="아이디">
-                                </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                  <label for="pwd" class="col-form-label">패스워드</label>
-                              </td>
-                              <td>
-                                  <input type="password" class="form-control" id="pwd" name="pwd" placeholder="********">
-                              </td>
-                          </tr>
-                          <tr>
-                              <td colspan="2" style="text-align: center;">
-                                  <button type="button" class="btn btn-primary">로그인</button>
-                                  <button onclick="location.href='/home'" type="button" class="btn btn-secondary">취소</button>
-                              </td>
-                          </tr>
-                        </tbody>
-                    </table>
-                    <button onclick="location.href='/user/register'" type="button" class="btn btn-success btn-sm">회원가입</button>
-                </form>
+            <button onclick="location.href='/user/register'" type="button" class="btn btn-success btn-sm" style = "float: right;">회원가입</button>
+            <h2>My BBS 로그인</h2>
+            <hr>
+            <form class="form" action="/login" method="POST">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <td>
+                            <label for="uid" class="col-form-label">사용자 ID </label>
+                            </td>
+                            <td>
+                            <input type="text" class="form-control" id="uid" name="uid" placeholder="아이디">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            <label for="pwd" class="col-form-label">패스워드</label>
+                            </td>
+                            <td>
+                            <input type="password" class="form-control" id="pwd" name="pwd" placeholder="********">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                            <button type="submit" class="btn btn-primary">로그인</button>
+                            <button onclick="location.href='/home'" type="button" class="btn btn-secondary">취소</button>
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
             </div>
         </div>
         <div class="col-3"></div>
     </div>
+    <br><br><br>
+    <br>
+    <br>
+    <br>
+    <br>
     ${template.footer()}
     `
 };

@@ -2,7 +2,6 @@
 const template = require('./template');
 const templateLogout = require('./templateLogout');
 
-
 module.exports.listForm = function (rows) {
     let tableRow = ''
     for (let row of rows) {
@@ -11,16 +10,16 @@ module.exports.listForm = function (rows) {
                         <td>${row.uname}</td>
                         <td>${row.regDate}</td>
                         <td>
-                            <a href="/user/admin/update/${row.uid}">수정</a>
-                            <a href="/user/admin/delete/${row.uid}">삭제</a>
+                            <a href="/user/update/${row.uid}">수정</a>
+                            <a href="/user/delete/${row.uid}">삭제</a>
                         </td>
                     </tr>`;
     }
     return `
     
-    ${templateLogout.header('admin')}
+    ${templateLogout.header()}
     <div class="container" style="margin-top: 90px;">  
-    <h2>회원관리</h2>
+    <h2>게시판</h2>
     <hr>
     <div class="row">
     <div class="col-3"></div>

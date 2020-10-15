@@ -50,9 +50,10 @@ module.exports = {
     });
     conn.end();
     },
+   
     updateUser: function(params,callback){
         let conn = this.getConnection();
-        let sql = `update users set pwd=? where uid=?;`;
+        let sql = `update users set uid =?, pwd=?, uname =?,tel =?,email=? where uid=?;`;
         conn.query(sql, params,function (error, fields) {
             if (error)
                 console.log(error);

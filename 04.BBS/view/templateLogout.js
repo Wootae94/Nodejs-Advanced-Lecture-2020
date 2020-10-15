@@ -1,5 +1,5 @@
 module.exports = {
-    header:     function() {
+    header:     function(uid) {
         return `
 <!DOCTYPE html>
 <html lang="ko">
@@ -24,14 +24,11 @@ module.exports = {
                 <a class="nav-link" href="/home"><i class="fas fa-home"></i>홈</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="/user/update">개인정보수정</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="/logout">로그아웃</a>
             </li>
         </ul>
         <div class="navbar-text fixed-right">
-            홍길동님 반갑습니다.&nbsp;&nbsp;&nbsp;&nbsp;
+            ${uid} 님 반갑습니다.&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
     </nav>
         `;

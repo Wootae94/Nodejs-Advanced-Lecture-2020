@@ -19,14 +19,6 @@ module.exports = {
             <img src="/img/logo.png" alt="호서직업능력개발원"
                 style="height: 40px; margin-left: 50px; margin-right: 100px;">
         </a>
-        <ul class="nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/home"><i class="fas fa-home"></i>홈</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login">로그인</a>
-            </li>
-        </ul>
     </nav>
         `;
     },
