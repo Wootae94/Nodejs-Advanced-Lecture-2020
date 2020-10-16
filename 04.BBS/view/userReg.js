@@ -4,12 +4,13 @@ const template = require('./template');
 module.exports.registerForm = function () {
     return `
     ${template.header()}
+    ${template.navbarReg()}
     <div class="container" style="margin-top: 90px;">  
+    <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
     <h2>회원가입</h2>
     <hr>
-    <div class="row">
-    <div class="col-3"></div>
-    <div class="col-6">
                 <form action="/user/register" method="POST">
                     <table class="table table-borderless">
                         <tr>
@@ -37,7 +38,7 @@ module.exports.registerForm = function () {
                     </table>
                 </form>
             </div>
-            <div class="col-3"></div>
+            <div class="col-2"></div>
         </div>
     </div>
     ${template.footer()}

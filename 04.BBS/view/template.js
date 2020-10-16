@@ -1,5 +1,5 @@
 module.exports = {
-    header:     function() {
+    header: function () {
         return `
 <!DOCTYPE html>
 <html lang="ko">
@@ -14,15 +14,98 @@ module.exports = {
     <script src="/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+    
+        `;
+    },
+
+    navbarLogin: function () {
+        return `
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
         <a class="navbar-brand" href="/home">
             <img src="/img/logo.png" alt="호서직업능력개발원"
                 style="height: 40px; margin-left: 50px; margin-right: 100px;">
         </a>
+        <ul class="nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/home"><i class="fas fa-home"></i>홈</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/register">회원가입</a>
+            </li>
+        </ul>
+        <div class="navbar-text fixed-right">
+            로그인이 필요합니다.&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
     </nav>
-        `;
+        `
     },
-    footer:     function() {
+    navbarUser: function (uid, uname) {
+        return `
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+        <a class="navbar-brand" href="/home">
+            <img src="/img/logo.png" alt="호서직업능력개발원"
+                style="height: 40px; margin-left: 50px; margin-right: 100px;">
+        </a>
+        <ul class="nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/home"><i class="fas fa-home"></i>홈</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/bbs/write"><i class="fas fa-pen-square"></i>글쓰기</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/uid/${uid}"><i class="far fa-user"></i>사용자</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">로그아웃</a>
+            </li>
+        </ul>
+        <div class="navbar-text fixed-right">
+            ${uname} 님 반갑습니다.&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+    </nav>
+        `
+    }, navbarReg: function () {
+        return `
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+        <a class="navbar-brand" href="/home">
+            <img src="/img/logo.png" alt="호서직업능력개발원"
+                style="height: 40px; margin-left: 50px; margin-right: 100px;">
+        </a>
+        <ul class="nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/home"><i class="fas fa-home"></i>홈</a>
+            </li>
+            
+        </ul>
+    </nav>
+        `
+    },
+    navbarAdmin: function () {
+        return `
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+        <a class="navbar-brand" href="/home">
+            <img src="/img/logo.png" alt="호서직업능력개발원"
+                style="height: 40px; margin-left: 50px; margin-right: 100px;">
+        </a>
+        <ul class="nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/home"><i class="far fa-list-alt"></i>게시판</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/admin/list"><i class="far fa-user"></i>사용자</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">로그아웃</a>
+            </li>
+        </ul>
+        <div class="navbar-text fixed-right">
+            관리자 님 반갑습니다.&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+    </nav>
+        `
+    },
+    footer: function () {
         return `
     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center fixed-bottom">
         <span class="navbar-text">

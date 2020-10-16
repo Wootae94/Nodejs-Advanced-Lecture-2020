@@ -33,7 +33,7 @@ module.exports = {
     },
     getUserInfo: function (uid, callback) {
         let conn = this.getConnection();
-        let sql = `select * from users where uid like ?;`;
+        let sql = `select * from users where uid like ? and isDeleted=0;`;
         conn.query(sql, uid, function (error, results, fields) {
             if (error)
                 console.log(error);
@@ -85,9 +85,12 @@ module.exports = {
     },
     getBbsLists: function (callback) {
         let conn = this.getConnection();
-        let sql = `SELECT bid,title,uid,date_format(modTime,'%Y-%m-%d %T') AS modTime,viewCount
-                    FROM bbs WHERE isDeleted = 0
-                    ORDER BY modTime
+        let sql = `SELECT b.bid as bid,b.title as title, b.uname as uname,u.uid as uid,
+        date_format(b.modTime,'%Y-%m-%d %T') AS modTime, b.viewCount
+                    FROM bbs as b
+                    left join users as u on b.uname=u.uname
+                    WHERE b.isDeleted = 0
+                    ORDER BY b.modTime desc
                     limit 10;`;
         conn.query(sql, function (error, rows, fields) {
             if (error)
@@ -96,18 +99,56 @@ module.exports = {
         });
         conn.end();
     },
-    post: function (bid,callback) {
+    getBbsView: function (bid,callback) {
         let conn = this.getConnection();
-        let sql = `SELECT b.title as title,b.bid as bid,b.modTime as modTime,b.viewCount as viewCount,b.replyCount as replyCount,
-                    b.content as content,r.content as content,r.regTime as regTime from
-                    bbs AS b LEFT join reply AS r ON b.bid=r.bid
-                    WHERE b.bid=?;`;
+        let sql = `SELECT b.title as title,
+        b.uname as uname,
+        b.bid as bid,
+        date_format(b.modTime,'%Y-%m-%d %T') AS modTime,
+        b.viewCount as viewCount,
+        b.replyCount as replyCount,
+        b.content as content,
+        r.content AS replyContent,
+        r.regTime as regTime 
+        from bbs AS b LEFT join reply AS r ON b.bid=r.bid
+        WHERE b.bid=?;`;
         conn.query(sql,bid, function (error, results, fields) {
             if (error)
                 console.log(error);
                 callback(results[0]);
-                
             });
         conn.end();
+    },
+    regBbsWrite: function(params,callback){
+        let conn = this.getConnection();
+        let sql = `insert into bbs (uname,title,content) values(?,?,?)`;
+        conn.query(sql, params, function (error, fields) {
+            if (error)
+                console.log(error);
+            callback();
+        });
+        conn.end();
+
+    },
+    updateBbs: function (params, callback) {
+        let conn = this.getConnection();
+        let sql = `update bbs set title =?, content=?, modTime=now() where bid=?;`;
+        conn.query(sql, params, function (error, fields) {
+            if (error)
+                console.log(error);
+            callback();
+        });
+        conn.end();
+    },
+    deleteBbs: function (bid, callback) {
+        let conn = this.getConnection();
+        let sql = `update bbs set isDeleted = 1 where bid=?;`;
+        conn.query(sql, bid, function (error, fields) {
+            if (error)
+                console.log(error);
+            callback();
+        });
+        conn.end();
     }
+
 };

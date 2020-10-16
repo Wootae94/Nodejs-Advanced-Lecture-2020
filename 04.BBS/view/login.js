@@ -4,6 +4,7 @@ const template = require('./template');
 module.exports.loginForm = function () {
     return `
     ${template.header()}
+    ${template.navbarLogin()}
     <style>
         /* Make the image fully responsive */
         .carousel-inner img {

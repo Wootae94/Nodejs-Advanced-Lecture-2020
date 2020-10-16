@@ -35,9 +35,9 @@ app.get('/home', ut.isLoggedIn, (req, res) => {
     res.redirect('/bbs/list')
 });
 
-app.get('/login', (req, res) => {
+app.get('/login', ut.alreadyLoggedIn, (req, res) => {
     const view = require('./view/login');
-    let html = view.loginForm();
+    let html = view.loginForm('none', '비회원');
     res.send(html);
 });
 
@@ -47,7 +47,7 @@ app.post('/login', (req, res) => {
     let pwdHash = ut.generateHash(pwd);
     dm.getUserInfo(uid, result => {
         if (result === undefined) {
-            let html = am.alertMsg(`Login 실패 : uid ${uid} 이/가 없습니다.`, '/login')
+            let html = am.alertMsg(`Login 실패 : ID가 없습니다.`, '/login')
             res.send(html);
         } else if (uid === 'admin') {
             if (result.pwd === pwdHash) {

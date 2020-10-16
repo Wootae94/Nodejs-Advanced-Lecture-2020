@@ -1,6 +1,5 @@
 ///로그인창
 const template = require('./template');
-const templateLogout = require('./templateLogout');
 
 
 module.exports.listForm = function (rows) {
@@ -8,7 +7,7 @@ module.exports.listForm = function (rows) {
     for (let row of rows) {
         tableRow += `<tr>
                         <td>${row.uid}</td>
-                        <td>${row.uname}</td>
+                        <td><strong>${row.uname}</strong></td>
                         <td>${row.regDate}</td>
                         <td>
                             <a href="/user/admin/update/${row.uid}">수정</a>
@@ -17,14 +16,14 @@ module.exports.listForm = function (rows) {
                     </tr>`;
     }
     return `
-    
-    ${templateLogout.header('admin')}
+    ${template.header()}
+    ${template.navbarAdmin()}
     <div class="container" style="margin-top: 90px;">  
+    <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
     <h2>회원관리</h2>
     <hr>
-    <div class="row">
-    <div class="col-3"></div>
-    <div class="col-6">
             <table class="table table-borderless">
                 <tr>
                     <th>uid</th>
@@ -36,7 +35,7 @@ module.exports.listForm = function (rows) {
         
             </table>
     </div>
-    <div class="col-3"></div>
+    <div class="col-2"></div>
     </div>
     </div>
     ${template.footer()}

@@ -12,5 +12,12 @@ module.exports = {
         } else {
             next();
         }
+    },
+    alreadyLoggedIn: function (req, res, next) {
+        if (req.session.uid) {
+            res.redirect('/home')
+        } else {
+            next();
+        }
     }
 }
