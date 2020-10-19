@@ -2,7 +2,7 @@
 const template = require('./template');
 
 
-module.exports.viewForm = function (result, uid, uname) {
+module.exports.viewForm = function (result, uid, uname,rows) {
 
     return `
     
@@ -28,16 +28,19 @@ module.exports.viewForm = function (result, uid, uname) {
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: right;">
-                        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='/bbs/update/bid/${result.bid}'">수정</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="location.href='/bbs/delete/bid/${result.bid}'">삭제</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="location.href='/bbs/update/bid/${result.bid}'"><i class="fas fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="location.href='/bbs/delete/bid/${result.bid}'"><i class="far fa-trash-alt"></i></button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <form>
+                    ${template.reply(rows)}
+                        <form action="/bbs/view/reply" method="POST">
+                        <input type="hidden" name="bid" value="${result.bid}">
+                        <input type="hidden" name="uid" value="${result.uid}">
                             <div class="form-group">
                                 <label for="comment">댓글</label>
-                                <textarea class="form-control" rows="3" id="comment" name="text"></textarea>
+                                <textarea class="form-control" rows="3" name="comment"  id="comment"></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary btn-sm">등록</button>
                         </form>
@@ -48,6 +51,11 @@ module.exports.viewForm = function (result, uid, uname) {
         <div class="col-1"></div>
     </div>
 </div>
+<br>
+    <br>
+    <br>
+    <br>
+    <br>
     ${template.footer()}
     `
 };

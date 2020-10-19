@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const dbModules = require('./db/db-modules');
 
 module.exports = {
     generateHash: function (something) {

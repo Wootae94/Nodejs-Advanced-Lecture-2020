@@ -8,7 +8,7 @@ module.exports.bbsForm = function (rows, uid, uname) {
         tableRow += `<tr class="clickable text-center" 
         onclick="location='/bbs/view/bid/${row.bid}/uid/${row.uid}'">
                         <td>${row.bid}</td>
-                        <td>${row.title}</td>
+                        <td>${row.title}&nbsp&nbsp<span class="badge  badge-danger">${row.replyCount}</span></td>
                         <td>${row.uname}</td>
                         <td>${row.modTime}</td>
                         <td>${row.viewCount}</td>

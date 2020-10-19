@@ -30,7 +30,7 @@ module.exports.writeForm = function (uid, uname) {
                     </tr>
                     <tr>
                         <td>
-                        <button type="submit" class="btn btn-primary btn-sm">작성</button>
+                        <button type="submit" class="btn btn-primary btn-sm" >작성</button>
                         </td>
                     </tr>
                     </table>

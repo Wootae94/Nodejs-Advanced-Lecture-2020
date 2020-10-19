@@ -18,16 +18,18 @@ uRouter.post('/register', (req, res) => {
     let uid = req.body.uid
     let pwd = req.body.pwd
     let pwd2 = req.body.pwd2
-    if (pwd === pwd2) {
-        let pwdHash = ut.generateHash(pwd);
-        let params = [uname, uid, pwdHash];
-        dm.userRegister(params, () => {
-            res.redirect(`/user/register/detail/${uid}`);
-        });
-    } else {
-        let html = am.alertMsg(`패스워드가 일치하지 않습니다.`, `/user/register`)
-        res.send(html);
-    }
+    dm.getUserInfo(uid,result=>{
+        if (pwd === pwd2) {
+            let pwdHash = ut.generateHash(pwd);
+            let params = [uname, uid, pwdHash, uname, uid, pwdHash];
+            dm.userRegister(params, () => {
+                res.redirect(`/user/register/detail/${uid}`);
+            });
+        } else {
+            let html = am.alertMsg(`패스워드가 일치하지 않습니다.`, `/user/register`)
+            res.send(html);
+        }
+    })
 
 });
 uRouter.get('/register/detail/:uid', (req, res) => {

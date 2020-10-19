@@ -64,7 +64,8 @@ module.exports = {
     },
     userRegister: function (params, callback) {
         let conn = this.getConnection();
-        let sql = `insert into users (uname,uid,pwd) values(?,?,?)`;
+        let sql = `insert into users (uname,uid,pwd) values(?,?,?) 
+                    on duplicate key update uname=?,uid=?,pwd=?,isDeleted=0`;
         conn.query(sql, params, function (error, fields) {
             if (error)
                 console.log(error);
@@ -85,8 +86,13 @@ module.exports = {
     },
     getBbsLists: function (callback) {
         let conn = this.getConnection();
-        let sql = `SELECT b.bid as bid,b.title as title, b.uname as uname,u.uid as uid,
-        date_format(b.modTime,'%Y-%m-%d %T') AS modTime, b.viewCount
+        let sql = `SELECT b.bid as bid,
+                    b.title as title, 
+                    b.uname as uname,      
+                    u.uid as uid,
+                    date_format(b.modTime,'%Y-%m-%d %T') AS modTime, 
+                    b.viewCount as viewCount,
+                    b.replyCount as replyCount
                     FROM bbs as b
                     left join users as u on b.uname=u.uname
                     WHERE b.isDeleted = 0
@@ -99,19 +105,42 @@ module.exports = {
         });
         conn.end();
     },
+    getBbsSearch: function (uname,callback) {
+        let conn = this.getConnection();
+        let sql = `SELECT b.bid as bid,
+        b.title as title, 
+        b.uname as uname,      
+        u.uid as uid,
+        date_format(b.modTime,'%Y-%m-%d %T') AS modTime, 
+        b.viewCount as viewCount,
+        b.replyCount as replyCount
+        FROM bbs as b
+        left join users as u on b.uname=u.uname
+        WHERE b.uname=? and b.isDeleted = 0
+        ORDER BY b.modTime desc
+        limit 10;`;
+        conn.query(sql, uname,function (error, rows, fields) {
+            if (error)
+                console.log(error);
+            callback(rows);
+            console.log(rows);
+        });
+        conn.end();
+    },
     getBbsView: function (bid,callback) {
         let conn = this.getConnection();
-        let sql = `SELECT b.title as title,
-        b.uname as uname,
-        b.bid as bid,
-        date_format(b.modTime,'%Y-%m-%d %T') AS modTime,
-        b.viewCount as viewCount,
-        b.replyCount as replyCount,
-        b.content as content,
-        r.content AS replyContent,
-        r.regTime as regTime 
-        from bbs AS b LEFT join reply AS r ON b.bid=r.bid
-        WHERE b.bid=?;`;
+        let sql = ` SELECT b.title as title,
+                    b.uname as uname,
+                    b.uid as uid,
+                    b.bid as bid,
+                    date_format(b.modTime,'%Y-%m-%d %T') AS modTime,
+                    b.viewCount as viewCount,
+                    b.replyCount as replyCount,
+                    b.content as content,
+                    r.content AS replyContent,
+                    date_format(r.regTime,'%Y-%m-%d %T') as regTime 
+                    from bbs AS b LEFT join reply AS r ON b.bid=r.bid
+                    WHERE b.bid=?;`;
         conn.query(sql,bid, function (error, results, fields) {
             if (error)
                 console.log(error);
@@ -121,7 +150,7 @@ module.exports = {
     },
     regBbsWrite: function(params,callback){
         let conn = this.getConnection();
-        let sql = `insert into bbs (uname,title,content) values(?,?,?)`;
+        let sql = `insert into bbs (uid,uname,title,content) values(?,?,?,?)`;
         conn.query(sql, params, function (error, fields) {
             if (error)
                 console.log(error);
@@ -149,6 +178,75 @@ module.exports = {
             callback();
         });
         conn.end();
+    },
+    incViewCount: function(bid,callback){
+        let conn = this.getConnection();
+        let sql = `update bbs set viewCount=viewCount+1 where bid=?;`;
+        conn.query(sql, bid, function (error, fields) {
+            if (error)
+                console.log(error);
+            callback();
+        });
+        conn.end();
+    },
+    regReply: function(params,callback){
+        let conn = this.getConnection();
+        let sql = `insert into reply (bid,uid,uname,content) values(?,?,?,?);`;
+        conn.query(sql, params, function (error, fields) {
+            if (error)
+                console.log(error);
+            callback();
+        });
+        conn.end();
+    },
+    viewReply: function(bid,callback){
+        let conn = this.getConnection();
+        let sql = ` SELECT uname,
+                           content,
+                           date_format(regTime,'%Y-%m-%d %T') AS regTime
+                           from reply
+                           WHERE bid=?;`;
+        conn.query(sql,bid, function (error, rows, fields) {
+            if (error)
+                console.log(error);
+                callback(rows);
+            });
+        conn.end();
+    },
+    replyCount: function(bids,callback){
+        let conn = this.getConnection();
+        let sql = `UPDATE bbs AS b
+                   SET b.replyCount = (SELECT COUNT(if(r.bid=?,r.bid,NULL))FROM reply AS r)
+                   WHERE b.bid=?;`;
+        conn.query(sql, bids, function (error,fields) {
+            if (error)
+                console.log(error);
+            callback();
+        });
+        conn.end();
+    },
+    replyIsMine: function(params,callback){
+        let conn = this.getConnection();
+        let sql = `UPDATE reply 
+                   SET isMine = 1
+                   WHERE uid=? and bid=?;`;
+        conn.query(sql, params, function (error,fields) {
+            if (error)
+                console.log(error);
+            callback();
+        });
+        conn.end();
+    },
+    replyNotMine: function(params,callback){
+        let conn = this.getConnection();
+        let sql = `UPDATE reply 
+                   SET isMine = 0
+                   WHERE uid=? and bid=?;`;
+        conn.query(sql, params, function (error,fields) {
+            if (error)
+                console.log(error);
+            callback();
+        });
+        conn.end();
     }
-
 };

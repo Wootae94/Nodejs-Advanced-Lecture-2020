@@ -59,6 +59,16 @@ module.exports = {
             <li class="nav-item">
                 <a class="nav-link" href="/logout">로그아웃</a>
             </li>
+            <li class="nav-item">
+            <form action="/bbs/list" method="POST">
+            <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="작성자 검색" name="search" id="search">
+            <div class="input-group-append">
+            <button class="btn btn-secondary" type="submit" name="search" id="search"><i class="fas fa-search"></i></button>
+            </div>
+            </div>
+            </form>
+            </li>
         </ul>
         <div class="navbar-text fixed-right">
             ${uname} 님 반갑습니다.&nbsp;&nbsp;&nbsp;&nbsp;
@@ -98,6 +108,14 @@ module.exports = {
             <li class="nav-item">
                 <a class="nav-link" href="/logout">로그아웃</a>
             </li>
+            <li class="nav-item">
+            <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search">
+            <div class="input-group-append">
+            <button class="btn btn-success" type="submit">Go</button>
+            </div>
+            </div>
+            </li>
         </ul>
         <div class="navbar-text fixed-right">
             관리자 님 반갑습니다.&nbsp;&nbsp;&nbsp;&nbsp;
@@ -115,5 +133,25 @@ module.exports = {
 </body>
 </html>
         `;
+    },
+    reply: function(rows){
+        let tableRow = ''
+    for (let row of rows) {
+        tableRow += `
+        <div class="card-columns">
+    <div class="card bg-light">
+      <div class="card-body text-left">
+        <p class="card-text">${row.uname}
+        ${row.regTime}<br>${row.content}
+        </p>
+      </div>
+    </div>
+        </div>
+              `;
+                        
+    }
+    return `
+                     ${tableRow}
+         `
     }
 }

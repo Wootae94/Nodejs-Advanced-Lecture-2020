@@ -39,14 +39,14 @@ insert into board(pass, name, email, title, content)
 values('1234', '이순신' , 'lee4141@gmail.com', '고민상담', '꽃이 진다고..그대를 잊은적 없다..');
 insert into board(pass, name, email, title, content)
 values('1234', '임꺽정' , 'igj0412@gmail.com', '청첩장', '다들 오세요!'); */
-let sql = `INSERT INTO bbs (uid,title,content) VALUES (?,?,?);`;
+let sql = `INSERT INTO bbs (uname,uid,title,content) VALUES (?,?,?,?);`;
 let params_list = [ 
-                    ['홍길동', 'first writing', '안녕하세용 내이름은...'],
-                    ['홍길동', 'first 가입인사', '잘지내봐요 '],
-                    ['이순신', '고민상담', '꽃이 진다고..그대를 잊은적 없다..'],
-                    ['임꺽정', '청첩장','다들 오세요!'],
-                    ['홍길동', '과제', '할게 많다'],
-                    ['김태우', '내용','뭐넣지...']]
+                    ['홍길동','gdhong', 'first writing', '안녕하세용 내이름은...'],
+                    ['홍길동', 'gdhong','first 가입인사', '잘지내봐요 '],
+                    ['이순신', 'sslee','고민상담', '꽃이 진다고..그대를 잊은적 없다..'],
+                    ['임꺽정', 'gjlim','청첩장','다들 오세요!'],
+                    ['홍길동', 'gdhong','과제', '할게 많다'],
+                    ['김태우', 'twkim','내용','뭐넣지...']]
 
 for (let params of params_list) {
     conn.query(sql, params, function (error, fields) {
