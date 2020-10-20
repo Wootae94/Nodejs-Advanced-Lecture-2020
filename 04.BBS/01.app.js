@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', ut.isLoggedIn, (req, res) => {
-    res.redirect('/bbs/list')
+    res.redirect('/bbs/list/1')
 });
 
 app.get('/login', ut.alreadyLoggedIn, (req, res) => {
@@ -64,7 +64,7 @@ app.post('/login', (req, res) => {
                 req.session.uname = result.uname;
                 console.log('Login 성공');
                 req.session.save(function () {
-                    res.redirect('/bbs/list');
+                    res.redirect('/bbs/list/1');
                 });
             } else {
                 let html = am.alertMsg('Login 실패 : Password를 확인하세요.', '/login')

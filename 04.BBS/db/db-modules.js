@@ -84,46 +84,53 @@ module.exports = {
         });
         conn.end();
     },
-    getBbsLists: function (callback) {
+    getBbsLists: function (offset,callback) {
         let conn = this.getConnection();
-        let sql = `SELECT b.bid as bid,
-                    b.title as title, 
-                    b.uname as uname,      
-                    u.uid as uid,
-                    date_format(b.modTime,'%Y-%m-%d %T') AS modTime, 
-                    b.viewCount as viewCount,
-                    b.replyCount as replyCount
-                    FROM bbs as b
-                    left join users as u on b.uname=u.uname
-                    WHERE b.isDeleted = 0
-                    ORDER BY b.modTime desc
-                    limit 10;`;
-        conn.query(sql, function (error, rows, fields) {
+        let sql = `SELECT bid,
+                    title, 
+                    uname,      
+                    uid,
+                    date_format(modTime,'%Y-%m-%d %T') AS modTime, 
+                    viewCount,
+                    replyCount
+                    FROM bbs
+                    WHERE isDeleted = 0
+                    ORDER BY bid desc
+                    limit 10 offset ?;`;
+        conn.query(sql,offset, function (error, rows, fields) {
             if (error)
                 console.log(error);
             callback(rows);
         });
         conn.end();
     },
-    getBbsSearch: function (uname,callback) {
+    getBbsTotalCount:     function(callback) {
         let conn = this.getConnection();
-        let sql = `SELECT b.bid as bid,
-        b.title as title, 
-        b.uname as uname,      
-        u.uid as uid,
-        date_format(b.modTime,'%Y-%m-%d %T') AS modTime, 
-        b.viewCount as viewCount,
-        b.replyCount as replyCount
-        FROM bbs as b
-        left join users as u on b.uname=u.uname
-        WHERE b.uname=? and b.isDeleted = 0
-        ORDER BY b.modTime desc
-        limit 10;`;
-        conn.query(sql, uname,function (error, rows, fields) {
+        let sql = `SELECT count(*) as count FROM bbs where isDeleted=0;`;
+        conn.query(sql, (error, results, fields) => {
+            if (error)
+                console.log(error);
+            callback(results[0]);   
+        });
+        conn.end();
+    },
+    getBbsSearch: function (title,callback) {
+        let conn = this.getConnection();
+        let sql = `SELECT bid,
+                    title, 
+                    uname,      
+                    uid,
+                    date_format(modTime,'%Y-%m-%d %T') AS modTime, 
+                    viewCount,
+                    replyCount
+                    FROM bbs
+                    WHERE isDeleted = 0 and title like` + '"%'+title+'%"'+
+                    `ORDER BY modTime desc
+                    limit 10;`;
+        conn.query(sql,title, function (error, rows, fields) {
             if (error)
                 console.log(error);
             callback(rows);
-            console.log(rows);
         });
         conn.end();
     },
@@ -191,7 +198,7 @@ module.exports = {
     },
     regReply: function(params,callback){
         let conn = this.getConnection();
-        let sql = `insert into reply (bid,uid,uname,content) values(?,?,?,?);`;
+        let sql = `insert into reply (bid,uid,uname,content,isMine) values(?,?,?,?,?);`;
         conn.query(sql, params, function (error, fields) {
             if (error)
                 console.log(error);
@@ -203,7 +210,8 @@ module.exports = {
         let conn = this.getConnection();
         let sql = ` SELECT uname,
                            content,
-                           date_format(regTime,'%Y-%m-%d %T') AS regTime
+                           date_format(regTime,'%Y-%m-%d %T') AS regTime,
+                           isMine
                            from reply
                            WHERE bid=?;`;
         conn.query(sql,bid, function (error, rows, fields) {

@@ -62,9 +62,9 @@ module.exports = {
             <li class="nav-item">
             <form action="/bbs/list" method="POST">
             <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="작성자 검색" name="search" id="search">
+            <input type="text" class="form-control" placeholder="제목 검색" name="search" id="search">
             <div class="input-group-append">
-            <button class="btn btn-secondary" type="submit" name="search" id="search"><i class="fas fa-search"></i></button>
+            <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
             </div>
             </div>
             </form>
@@ -73,7 +73,7 @@ module.exports = {
         <div class="navbar-text fixed-right">
             ${uname} 님 반갑습니다.&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
-    </nav>
+        </nav>
         `
     }, navbarReg: function () {
         return `
@@ -108,14 +108,6 @@ module.exports = {
             <li class="nav-item">
                 <a class="nav-link" href="/logout">로그아웃</a>
             </li>
-            <li class="nav-item">
-            <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Search">
-            <div class="input-group-append">
-            <button class="btn btn-success" type="submit">Go</button>
-            </div>
-            </div>
-            </li>
         </ul>
         <div class="navbar-text fixed-right">
             관리자 님 반갑습니다.&nbsp;&nbsp;&nbsp;&nbsp;
@@ -135,23 +127,32 @@ module.exports = {
         `;
     },
     reply: function(rows){
-        let tableRow = ''
+        let tableRow = ``
     for (let row of rows) {
-        tableRow += `
-        <div class="card-columns">
-    <div class="card bg-light">
-      <div class="card-body text-left">
-        <p class="card-text">${row.uname}
-        ${row.regTime}<br>${row.content}
-        </p>
-      </div>
-    </div>
-        </div>
-              `;
-                        
+        tableRow += (row.isMine == 0) ? 
+            `<div class="card bg-light text-dark mt-1" style="margin-right: 60%;">` :
+            `<div class="card bg-dark text-light text-right mt-1" style="margin-left: 70%;">`;
+        tableRow +=
+            `  
+            <div class="card-body">
+            <h6 class="card-title">${row.uname} ${row.regTime}</h6>
+            <p class="card-text"> 
+                    ${row.content.replace(/\r/g, '<br>')}
+                    </p>
+                    </div>
+                </div>
+              `;          
     }
     return `
                      ${tableRow}
          `
+    },
+    bbsButton: function(bid,_mine){
+            let buttons =
+            (_mine == 1)?
+             `<div class="float-right">
+             <button type="button" class="btn btn-primary btn-sm" onclick="location.href='/bbs/update/bid/${bid}'"><i class="fas fa-edit"></i></button><button type="button" class="btn btn-danger btn-sm" onclick="location.href='/bbs/delete/bid/${bid}'"><i class="far fa-trash-alt"></i></button>
+            </div>`:''
+        return `${buttons}`
     }
 }
