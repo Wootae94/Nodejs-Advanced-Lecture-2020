@@ -18,16 +18,26 @@ module.exports = {
         });
         return conn;
     },
-    getAllLists: function (callback) {
+    getAllLists: function (offset,callback) {
         let conn = this.getConnection();
         let sql = `SELECT uid,uname,date_format(regDate,'%Y-%m-%d %T') AS regDate
                     FROM users WHERE isDeleted = 0
                     ORDER BY regDate
-                    limit 10;`;
-        conn.query(sql, function (error, rows, fields) {
+                    limit 10 offset ?;`;
+        conn.query(sql,offset, function (error, rows, fields) {
             if (error)
                 console.log(error);
             callback(rows);
+        });
+        conn.end();
+    },
+    getUsersTotalCount:     function(callback) {
+        let conn = this.getConnection();
+        let sql = `SELECT count(*) as count FROM users where isDeleted=0;`;
+        conn.query(sql, (error, results, fields) => {
+            if (error)
+                console.log(error);
+            callback(results[0]);   
         });
         conn.end();
     },

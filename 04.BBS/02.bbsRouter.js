@@ -10,7 +10,7 @@ bRouter.get('/list/:page',ut.isLoggedIn, (req, res) => {
     let page = parseInt(req.params.page);
     req.session.currentPage = page;
     let offset = (page-1) * 10;
-    console.log(page);
+    
     dm.getBbsTotalCount(result => {
         let totalPage = Math.ceil(result.count / 10);
         let startPage = Math.floor((page-1)/10)*10 + 1;
@@ -18,7 +18,7 @@ bRouter.get('/list/:page',ut.isLoggedIn, (req, res) => {
         endPage = (endPage > totalPage) ? totalPage : endPage;
         dm.getBbsLists(offset,rows => {
             const view = require('./view/bbsList');
-            let html = view.bbsForm(rows, req.session.uid, req.session.uname,page,startPage,endPage,totalPage);
+            let html = view.bbsForm(rows, req.session.uid, req.session.uname,page,startPage,endPage,totalPage,`bbs`);
             res.send(html);
         });
     });

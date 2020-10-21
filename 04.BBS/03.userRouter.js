@@ -4,9 +4,23 @@ const dm = require('./db/db-modules');
 const am = require('./view/userAlertMsg');
 const ut = require('./04.utill');
 const uRouter = express.Router();
+const multer = require('multer');
+const upload = multer({
+    storage: multer.diskStorage({
+        // set a localstorage destination
+        destination: __dirname + '/public/upload/',
+        // set a file name
+        filename: (req, file, cb) => {
+            //cb(null, file.originalname);
+            cb(null, new Date().toISOString().replace(/[-:\.A-Z]/g,'') + '_' + file.originalname);
+        }
+    })
+});
+
 
 
 module.exports = uRouter;
+uRouter.use('/register/detail/', express.static('uploads'));
 /// 회원가입
 uRouter.get('/register', (req, res) => {
     const view = require('./view/userReg');
@@ -18,25 +32,21 @@ uRouter.post('/register', (req, res) => {
     let uid = req.body.uid
     let pwd = req.body.pwd
     let pwd2 = req.body.pwd2
-    dm.getUserInfo(uid,result=>{
-        if (pwd === pwd2) {
-            let pwdHash = ut.generateHash(pwd);
-            let params = [uname, uid, pwdHash, uname, uid, pwdHash];
-            dm.userRegister(params, () => {
-                res.redirect(`/user/register/detail/${uid}`);
-            });
-        } else {
-            let html = am.alertMsg(`패스워드가 일치하지 않습니다.`, `/user/register`)
-            res.send(html);
-        }
-    })
-
-});
-uRouter.get('/register/detail/:uid', (req, res) => {
+            if (pwd === pwd2) {
+                let pwdHash = ut.generateHash(pwd);
+                let params = [uname, uid, pwdHash, uname, uid, pwdHash];
+                dm.userRegister(params, () => {
+                    res.redirect(`/user/register/detail/uid/${uid}`);
+                });
+            } else {
+                let html = am.alertMsg(`패스워드가 일치하지 않습니다.`, `/user/register`)
+                res.send(html);
+            }
+        });
+uRouter.get('/register/detail/uid/:uid', (req, res) => {
     dm.getUserInfo(req.params.uid, (result) => {
         const view = require('./view/userRegDetail')
         let html = view.userDetail(result);
-        console.log(result.uid);
         res.send(html);
     });
 });
@@ -46,16 +56,38 @@ uRouter.post('/register/detail', (req, res) => {
     let uid = req.body.uid
     let params = [tel, email, uid]
     dm.userDetail(params, () => {
-        res.redirect('/login')
+        res.redirect(`/user/register/detail/upload/uid/${uid}`)
     });
-
 });
-/// 관리자권한
-uRouter.get('/admin/list', (req, res) => {
-    dm.getAllLists(rows => {
-        const view = require('./view/adminList');
-        let html = view.listForm(rows, req.session.uid, req.session.uname ? req.session.uname : '비회원');
+uRouter.get('/register/detail/upload/uid/:uid', (req, res) => {
+    
+        const view = require('./view/userUpload')
+        let html = view.userUpload();
         res.send(html);
+    
+});
+
+  uRouter.post('/register/detail/upload/uid', upload.single('userfile'), function(req, res){
+    res.send('Uploaded! : '+req.file); // object를 리턴함
+    console.log(req.file); // 콘솔(터미널)을 통해서 req.file Object 내용 확인 가능.
+  });
+
+/// 관리자권한
+uRouter.get('/admin/list/:page', (req, res) => {
+    let page = parseInt(req.params.page);
+    req.session.currentPage = page;
+    let offset = (page-1) * 10;
+
+    dm.getUsersTotalCount(result => {
+        let totalPage = Math.ceil(result.count / 10);
+        let startPage = Math.floor((page-1)/10)*10 + 1;
+        let endPage = Math.ceil(page/10)*10;
+        endPage = (endPage > totalPage) ? totalPage : endPage;
+        dm.getAllLists(offset, rows => {
+            const view = require('./view/adminList');
+            let html = view.listForm(rows, page, startPage, endPage, totalPage,`user/admin`);
+            res.send(html);
+        });
     });
 });
 uRouter.get('/admin/update/:uid', (req, res) => {
@@ -75,9 +107,9 @@ uRouter.post('/admin/update', (req, res) => {
     let email = req.body.email
     if (pwd === pwd2) {
         let pwdHash = ut.generateHash(pwd);
-        let params = [uid, pwdHash, uname, tel, email];
+        let params = [uid, pwdHash, uname, tel, email,uid];
         dm.updateUser(params, () => {
-            res.redirect('/user/admin/list');
+            res.redirect('/user/admin/list/1');
         });
     } else {
         let html = am.alertMsg(`패스워드가 일치하지 않습니다.`, `/user/admin/update/${uid}`)
@@ -94,17 +126,17 @@ uRouter.get('/admin/delete/:uid', (req, res) => {
 });
 uRouter.post('/admin/delete', (req, res) => {
     dm.deleteUser(req.body.uid, () => {
-        res.redirect('/user/admin/list')
+        res.redirect('/user/admin/list/1')
     })
 });
 /// 개인정보관리
 uRouter.get('/uid/:uid', (req, res) => {
     let uid = req.params.uid
     if (uid === 'admin') {
-        res.redirect('/user/admin/list')
+        res.redirect('/user/admin/list/1')
     } else {
         dm.getUserInfo(req.params.uid, (result) => {
-            const view = require('./view/userDetail')
+            const view = require('./view/useDetail')
             let html = view.userDetail(result, req.session.uid, req.session.uname);
             res.send(html);
         });
@@ -135,7 +167,7 @@ uRouter.post('/update/uid', (req, res) => {
         let pwdHash = ut.generateHash(pwd);
         let params = [uid, pwdHash, uname, tel, email, req.session.uid];
         dm.updateUser(params, () => {
-            res.redirect('/bbs/list');
+            res.redirect('/bbs/list/1');
         });
     } else {
         let html = am.alertMsg(`패스워드가 일치하지 않습니다.`, `/user/update/uid/${uid}`)

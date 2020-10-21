@@ -55,7 +55,7 @@ app.post('/login', (req, res) => {
                 req.session.uname = result.uname;
                 console.log('Login 성공');
                 req.session.save(function () {
-                    res.redirect('/user/admin/list');
+                    res.redirect('/user/admin/list/1');
                 });
             }
         } else {
@@ -78,7 +78,6 @@ app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/home');
 });
-
 app.listen(3000, () => {
     console.log(`Server is runnuning at http:// 127.0.0.1:3000`);
 });

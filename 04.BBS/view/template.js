@@ -103,7 +103,7 @@ module.exports = {
                 <a class="nav-link" href="/home"><i class="far fa-list-alt"></i>게시판</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/user/admin/list"><i class="far fa-user"></i>사용자</a>
+                <a class="nav-link" href="/user/admin/list/1"><i class="far fa-user"></i>사용자</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/logout">로그아웃</a>
@@ -154,5 +154,27 @@ module.exports = {
              <button type="button" class="btn btn-primary btn-sm" onclick="location.href='/bbs/update/bid/${bid}'"><i class="fas fa-edit"></i></button><button type="button" class="btn btn-danger btn-sm" onclick="location.href='/bbs/delete/bid/${bid}'"><i class="far fa-trash-alt"></i></button>
             </div>`:''
         return `${buttons}`
+    },
+    page : function(pageNo, startPage, endPage, totalPage,router){
+        let leftPage = (pageNo > 10) ? `/${router}/list/${Math.floor(pageNo/10) * 10}` : '#';
+        let pages = ``
+        pages += `<li class="page-item">
+                    <a class="page-link active" href="${leftPage}">
+                    Previous</a>
+                </li>`;
+        for (let page = startPage; page <= endPage; page++) {
+        if (page === pageNo)
+            pages += `<li class="page-item active"><a class="page-link" href="#">${page}</a></li>`;
+        else
+            pages += `<li class="page-item"><a class="page-link" href="/${router}/list/${page}">${page}</a></li>`;
     }
+    let rightPage = (endPage < totalPage) ? `/${router}/list/${Math.ceil(pageNo/10)*10 + 1}` : '#';
+    pages += `<li class="page-item">
+                <a class="page-link" href="${rightPage}">
+                Next</a>
+            </li>`;
+    return pages
+        }
+    
+    
 }

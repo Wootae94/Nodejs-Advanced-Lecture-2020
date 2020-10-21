@@ -1,31 +1,7 @@
-
 const template = require('./template');
 const ut = require('../04.utill');
 
-module.exports.bbsForm = function (rows, uid, uname,pageNo, startPage, endPage, totalPage) {
-    
-    ///페이지 처리
-    let leftPage = (pageNo > 10) ? `/bbs/list/${Math.floor(pageNo/10) * 10}` : '#';
-    let pages = `<li class="page-item">
-                    <a class="page-link active" href="${leftPage}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span></a>
-                </li>`;
-    for (let page = startPage; page <= endPage; page++) {
-        if (page === pageNo)
-            pages += `<li class="page-item active" aria-current="page">
-                        <span class="page-link">
-                            ${page}<span class="sr-only">(current)</span>
-                        </span>
-                    </li>`;
-        else
-            pages += `<li class="page-item"><a class="page-link" href="/bbs/list/${page}">${page}</a></li>`;
-    }
-    let rightPage = (endPage < totalPage) ? `/bbs/list/${Math.ceil(pageNo/10)*10 + 1}` : '#';
-    pages += `<li class="page-item">
-                <a class="page-link" href="${rightPage}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span></a>
-            </li>`;
-
+module.exports.bbsForm = function (rows, uid, uname, pageNo, startPage, endPage, totalPage,router) {
     ///테이블 생성
     let tableRow = ''
     for (let row of rows) {
@@ -42,7 +18,7 @@ module.exports.bbsForm = function (rows, uid, uname,pageNo, startPage, endPage, 
     
     ${template.header()}
     ${template.navbarUser(uid, uname)}
-    <div class="container" style="margin-top: 90px;">  
+    <div class="container" style="margin-top: 130px;">  
     <div class="row">
     <div class="col-1"></div>
     <div class="col-10">
@@ -63,7 +39,7 @@ module.exports.bbsForm = function (rows, uid, uname,pageNo, startPage, endPage, 
                 </tbody>
             </table>
             <ul class="pagination justify-content-center">
-            ${pages}
+            ${template.page(pageNo, startPage, endPage, totalPage,router)}
             </ul>
     </div>
     <div class="col-1"></div>

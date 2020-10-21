@@ -11,11 +11,12 @@ module.exports.userDetail = function (result) {
     <div class="col-6">
     <h2>회원가입</h2>
     <hr>
+    <h3>회원 상세정보</h3>
                 <form action="/user/register/detail" method="POST">
                 <input type="hidden" name="uid" value="${result.uid}">
                     <table class="table table-borderless">
                         <tr>
-                        <td colspan="2" style="text-align: center;">
+                        <td colspan="2">
                         선택사항입니다.
                         </td>
                         </tr>
@@ -29,7 +30,14 @@ module.exports.userDetail = function (result) {
                         </tr>
                         <tr>
                             <td colspan="2" style="text-align: center;">
-                                <button type="submit" class="btn btn-primary btn-sm">가입</button>
+                            <div class="form-group">
+                            <input type="file" class="form-control-file border" name="userfile">
+                            </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                <button type="submit" class="btn btn-primary btn-sm">다음</button>
                                 <button onclick="location.href='/home'" type="reset" class="btn btn-secondary btn-sm">취소</button>
                             </td>
                         </tr>
