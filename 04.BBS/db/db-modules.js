@@ -20,7 +20,7 @@ module.exports = {
     },
     getAllLists: function (offset,callback) {
         let conn = this.getConnection();
-        let sql = `SELECT uid,uname,date_format(regDate,'%Y-%m-%d %T') AS regDate
+        let sql = `SELECT uid,uname,date_format(regDate,'%Y-%m-%d %T') AS regDate,photo
                     FROM users WHERE isDeleted = 0
                     ORDER BY regDate
                     limit 10 offset ?;`;
@@ -62,9 +62,17 @@ module.exports = {
         conn.end();
     },
 
-    updateUser: function (params, callback) {
+    updateUser: function (params, photo, uid, callback) {
         let conn = this.getConnection();
-        let sql = `update users set uid =?, pwd=?, uname =?,tel =?,email=? where uid=?;`;
+        let sql;
+            if (photo) {
+                sql = `update users set pwd=?, uname=?, tel=?, email=?, photo=? where uid=?;`;
+                params.push(photo); 
+                params.push(uid);
+            } else {
+                sql = `update users set pwd=?, uname=?, tel=?, email=? where uid=?;`;
+                params.push(uid);
+            }
         conn.query(sql, params, function (error, fields) {
             if (error)
                 console.log(error);
@@ -74,19 +82,7 @@ module.exports = {
     },
     userRegister: function (params, callback) {
         let conn = this.getConnection();
-        let sql = `insert into users (uname,uid,pwd) values(?,?,?) 
-                    on duplicate key update uname=?,uid=?,pwd=?,isDeleted=0`;
-        conn.query(sql, params, function (error, fields) {
-            if (error)
-                console.log(error);
-            callback();
-        });
-        conn.end();
-    },
-    userDetail: function (params, callback) {
-        let conn = this.getConnection();
-        let sql = `UPDATE users set tel=?, email=?
-        where uid = ?;`
+        let  sql = `insert into users(uid, pwd, uname, tel, email, photo) values(?,?,?,?,?,?);`;
         conn.query(sql, params, function (error, fields) {
             if (error)
                 console.log(error);

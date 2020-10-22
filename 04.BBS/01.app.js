@@ -55,7 +55,7 @@ app.post('/login', (req, res) => {
                 req.session.uname = result.uname;
                 console.log('Login 성공');
                 req.session.save(function () {
-                    res.redirect('/user/admin/list/1');
+                    res.redirect('/user/uid/admin/list/1');
                 });
             }
         } else {

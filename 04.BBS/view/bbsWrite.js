@@ -40,5 +40,7 @@ module.exports.writeForm = function (uid, uname) {
     </div>
 </div>
     ${template.footer()}
+    </body>
+</html>
     `
 };

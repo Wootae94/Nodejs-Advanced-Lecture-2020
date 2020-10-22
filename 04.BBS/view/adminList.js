@@ -2,22 +2,23 @@
 const template = require('./template');
 
 
-module.exports.listForm = function (rows,pageNo, startPage, endPage, totalPage,router) {
+module.exports.listForm = function (rows,pageNo, startPage, endPage, totalPage,router,uid, uname) {
     let tableRow = ''
     for (let row of rows) {
         tableRow += `<tr>
                         <td>${row.uid}</td>
                         <td><strong>${row.uname}</strong></td>
+                        <td><img style="margin-left: 30px;" src="${row.photo}" width="50"></td>
                         <td>${row.regDate}</td>
                         <td>
-                            <a href="/user/admin/update/${row.uid}">수정</a>
-                            <a href="/user/admin/delete/${row.uid}">삭제</a>
+                            <a href="/user/update/uid/${row.uid}">수정</a>
+                            <a href="/user/delete/uid/${row.uid}">삭제</a>
                         </td>
                     </tr>`;
     }
     return `
     ${template.header()}
-    ${template.navbarAdmin()}
+    ${template.navbarUser(uid, uname)}
     <div class="container" style="margin-top: 90px;">  
     <div class="row">
     <div class="col-2"></div>
@@ -29,6 +30,7 @@ module.exports.listForm = function (rows,pageNo, startPage, endPage, totalPage,r
                 <tr>
                     <th>uid</th>
                     <th>이름</th>
+                    <th>프로필사진</th>
                     <th>등록일</th>
                     <th>액션</th>
                 </tr>
@@ -44,5 +46,7 @@ module.exports.listForm = function (rows,pageNo, startPage, endPage, totalPage,r
     </div>
     </div>
     ${template.footer()}
+    </body>
+</html>
     `
 };

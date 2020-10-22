@@ -46,5 +46,7 @@ module.exports.bbsForm = function (rows, uid, uname, pageNo, startPage, endPage,
     </div>
     </div>
     ${template.footer()}
+    </body>
+</html>
     `
 };

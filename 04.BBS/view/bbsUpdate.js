@@ -42,5 +42,7 @@ module.exports.updateForm = function (result, uid, uname) {
     </div>
 </div>
     ${template.footer()}
+    </body>
+</html>
     `
 };

@@ -92,5 +92,7 @@ module.exports.loginForm = function () {
     <br>
     <br>
     ${template.footer()}
+    </body>
+</html>
     `
 };

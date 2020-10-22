@@ -14,7 +14,7 @@ module.exports.deleteForm = function (result) {
         <table class="table table-borderless">
             <tr>
                 <td>
-                정말 탈퇴하시겠습니까?
+                ${result.uname} 님의 정보를 삭제하시겠습니까?
                 </td>
             </tr>
             <tr>
@@ -30,5 +30,7 @@ module.exports.deleteForm = function (result) {
     </div>
     </div>
     ${template.footer()}
+    </body>
+</html>
     `
 };

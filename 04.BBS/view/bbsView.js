@@ -58,5 +58,7 @@ module.exports.viewForm = function (result, uid, uname,rows,_mine) {
     <br>
     <br>
     ${template.footer()}
+    </body>
+</html>
     `
 };

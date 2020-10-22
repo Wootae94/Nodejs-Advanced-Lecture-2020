@@ -30,5 +30,7 @@ module.exports.deleteForm = function (result, uid, uname) {
     </div>
     </div>
     ${template.footer()}
+    </body>
+</html>
     `
 };
