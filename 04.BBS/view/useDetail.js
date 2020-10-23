@@ -32,7 +32,7 @@ module.exports.userDetail = function (result, uid, uname) {
             </tr>
             <tr>
             <td colspan="2" style="text-align : right"><button onclick="location.href='/user/update/uid/${result.uid}'" class="btn btn-primary btn-sm" >수정</button>
-            <button onclick="location.href='/user/delete/uid/${result.uid}'" type="reset" class="btn btn-danger btn-sm">탈퇴</button></td>
+            <button onclick="location.href='/user/delete/uid/${result.uid}'" class="btn btn-danger btn-sm">탈퇴</button></td>
             </tr>
         </table>
     </div>

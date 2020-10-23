@@ -52,8 +52,8 @@ module.exports.updateForm = function (result, uid, uname) {
         </tr>
         <tr>
             <td colspan="3" style="text-align: center;">
-                <input class="btn btn-primary" type="submit" value="수정">
-                <input class="btn btn-secondary" type="reset" value="리셋">
+                <button type="submit" class="btn btn-danger btn-sm">수정</button>
+                <button onclick="location.href='/user/uid/${result.uid}'" type="reset" class="btn btn-secondary btn-sm">취소</button>
             </td>
         </tr>
     </table>

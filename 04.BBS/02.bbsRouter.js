@@ -4,6 +4,17 @@ const ut = require('./04.utill');
 const express = require('express');
 const { data } = require('jquery');
 const { param } = require('./03.userRouter');
+const multer = require('multer');
+const upload = multer({
+    storage: multer.diskStorage({
+        // set a localstorage destination
+        destination: __dirname + '/public/upload/',
+        // set a file name
+        filename: (req, file, cb) => {
+            cb(null, new Date().toISOString().replace(/[-:\.A-Z]/g, '') + '_' + file.originalname);
+        }
+    })
+});
 
 const bRouter = express.Router();
 bRouter.get('/list/:page',ut.isLoggedIn, (req, res) => {
@@ -87,9 +98,10 @@ bRouter.post('/update/bid', (req, res) => {
     let title = req.body.title;
     let content = req.body.content;
     let bid = req.body.bid;
+    let uid = req.body.uid;
     let params = [title, content, bid];
     dm.updateBbs(params, () => {
-        res.redirect(`/bbs/list/1`);
+        res.redirect(`/view/bid/${bid}/uid/${uid}`);
     });;
 });
 bRouter.get('/delete/bid/:bid', (req, res) => {
@@ -104,5 +116,15 @@ bRouter.post('/delete/bid', (req, res) => {
     dm.deleteBbs(req.body.bid, () => {
         res.redirect('/bbs/list/1')
     });
+});
+bRouter.post('/uploadImage.do', ut.isLoggedIn, upload.single('upload'), (req, res) => {
+    //console.log(req.file);
+    let fileUrl = '/upload/' + req.file.filename;
+    let jsonResponse = {
+        uploaded: 1,
+        fileName: req.file.filename,
+        url: fileUrl
+    };
+    res.send(JSON.stringify(jsonResponse));
 });
 module.exports = bRouter;

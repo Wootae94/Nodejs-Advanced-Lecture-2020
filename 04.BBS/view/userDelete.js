@@ -20,7 +20,7 @@ module.exports.deleteForm = function (result) {
             <tr>
                 <td >
                 <button type="submit" class="btn btn-danger btn-sm">탈퇴</button>
-                <button onclick="location.href='/home'" type="reset" class="btn btn-secondary btn-sm">취소</button>
+                <button onclick="location.href='/user/uid/${result.uid}'" type="reset" class="btn btn-secondary btn-sm">취소</button>
                 </td>
             </tr>
             </table>

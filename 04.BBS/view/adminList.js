@@ -11,8 +11,8 @@ module.exports.listForm = function (rows,pageNo, startPage, endPage, totalPage,r
                         <td><img style="margin-left: 30px;" src="${row.photo}" width="50"></td>
                         <td>${row.regDate}</td>
                         <td>
-                            <a href="/user/update/uid/${row.uid}">수정</a>
-                            <a href="/user/delete/uid/${row.uid}">삭제</a>
+                            <a href="/user/update/uid/${row.uid}"><i class="fas fa-user-edit"></i></a>
+                            <a href="/user/delete/uid/${row.uid}"><i class="fas fa-user-slash"></i></a>
                         </td>
                     </tr>`;
     }
@@ -46,6 +46,14 @@ module.exports.listForm = function (rows,pageNo, startPage, endPage, totalPage,r
     </div>
     </div>
     ${template.footer()}
+    <br>
+    
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     </body>
 </html>
     `

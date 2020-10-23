@@ -15,6 +15,7 @@ const ut = require('./04.utill');
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist'));
 app.use('/popper', express.static(__dirname + '/node_modules/@poperjs/core/dist/umd'));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
+app.use('/ckeditor4', express.static(__dirname + '/node_modules/ckeditor4/'));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('1q2w3e4r5t6y'));
@@ -32,7 +33,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', ut.isLoggedIn, (req, res) => {
-    res.redirect('/bbs/list/1')
+    if(req.session.uid == 'admin'){
+        res.redirect('/user/uid/admin/list/1')
+    } else {
+        res.redirect('/bbs/list/1')
+    }
 });
 
 app.get('/login', ut.alreadyLoggedIn, (req, res) => {
