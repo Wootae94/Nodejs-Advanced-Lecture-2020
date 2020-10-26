@@ -26,7 +26,6 @@ module.exports.writeForm = function (uid, uname) {
         <div class="col-1"></div>
         <div class="col-10">
             <form action="/bbs/write" method="POST">
-                      
                         <label for="title">제목</label></td>
                         <input type="text" class="title" placeholder="제목" id="title"name="title">
                         <span class="float-right">작성자: <strong>${uname}</strong></span>

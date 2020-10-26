@@ -60,7 +60,7 @@ module.exports = {
                 <a class="nav-link" href="/logout">로그아웃</a>
             </li>
             <li class="nav-item">
-            <form action="/bbs/list" method="POST">
+            <form action="/bbs/search" method="POST">
             <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="제목 검색" name="search" id="search">
             <div class="input-group-append">
@@ -71,7 +71,7 @@ module.exports = {
             </li>
         </ul>
         <div class="navbar-text fixed-right">
-            ${uname} 님 반갑습니다.&nbsp;&nbsp;&nbsp;&nbsp;
+            <p>${uname} 님 반갑습니다.&nbsp;&nbsp;&nbsp;&nbsp;</p>
         </div>
         </nav>
         `

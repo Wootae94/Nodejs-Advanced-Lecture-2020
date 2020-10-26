@@ -1,5 +1,4 @@
 const dm = require('./db/db-modules');
-const am = require('./view/userAlertMsg');
 const ut = require('./04.utill');
 const express = require('express');
 const { data } = require('jquery');
@@ -17,60 +16,58 @@ const upload = multer({
 });
 
 const bRouter = express.Router();
-bRouter.get('/list/:page',ut.isLoggedIn, (req, res) => {
+bRouter.get('/list/:page', ut.isLoggedIn, (req, res) => {
     let page = parseInt(req.params.page);
     req.session.currentPage = page;
-    let offset = (page-1) * 10;
-    
+    let offset = (page - 1) * 10;
+
     dm.getBbsTotalCount(result => {
         let totalPage = Math.ceil(result.count / 10);
-        let startPage = Math.floor((page-1)/10)*10 + 1;
-        let endPage = Math.ceil(page/10)*10;
+        let startPage = Math.floor((page - 1) / 10) * 10 + 1;
+        let endPage = Math.ceil(page / 10) * 10;
         endPage = (endPage > totalPage) ? totalPage : endPage;
-        dm.getBbsLists(offset,rows => {
+        dm.getBbsLists(offset, rows => {
             const view = require('./view/bbsList');
-            let html = view.bbsForm(rows, req.session.uid, req.session.uname,page,startPage,endPage,totalPage,`bbs`);
+            let html = view.bbsForm(rows, req.session.uid, req.session.uname, page, startPage, endPage, totalPage, `bbs`);
             res.send(html);
         });
     });
 });
-bRouter.post('/list', (req, res) => {
-    let title = req.body.search
-    dm.getBbsSearch(title, rows => {
+bRouter.post('/search', (req, res) => {
+    let keyword = req.body.search
+    dm.getBbsSearch(keyword, rows => {
         const view = require('./view/bbsList');
         let html = view.bbsForm(rows, req.session.uid, req.session.uname);
         res.send(html);
     });
 });
 
-bRouter.get('/view/bid/:bid/uid/:uid', (req, res) => {
+bRouter.get('/bid/:bid/uid/:uid', (req, res) => {
     let bid = req.params.bid
-    dm.getBbsView(bid, (result) => {
-        dm.incViewCount(bid, () => {
-            dm.viewReply(bid,(rows) => {   
-                    let _mine = (req.session.uid === req.params.uid ? 1:0)
+    let uid = req.params.uid
+    dm.getBbsData(bid, (result) => {
+        dm.viewReply(bid, (rows) => {
+            dm.incViewCount(uid,req.session.uid,bid, () => {
+                    let _mine = (req.session.uid === req.params.uid ? 1 : 0)
                     const view = require('./view/bbsView');
-                    let html = view.viewForm(result, req.session.uid, req.session.uname,rows,_mine);
+                    let html = view.viewForm(result, req.session.uid, req.session.uname, rows, _mine);
                     res.send(html);
-                
             });
         })
     });
 });
-bRouter.post('/view/reply', (req, res) => {
+bRouter.post('/reply', (req, res) => {
     let bid = req.body.bid;
     let uname = req.session.uname;
     let comment = req.body.comment;
-    console.log(req.body.uid);
-    console.log(req.session.uid);
-    let isMine = (req.session.uid===req.body.uid ? 1:0)
-    let params = [bid,req.session.uid,uname,comment,isMine];
-    let bids = [bid,bid]
-    dm.regReply(params,() => {
-        dm.replyCount(bids,()=>{
-            res.redirect(`/bbs/view/bid/${bid}/uid/${req.body.uid}`);
-            })
+    let isMine = (req.session.uid === req.body.uid ? 1 : 0)
+    let params = [bid, req.session.uid, uname, comment, isMine];
+    let bids = [bid, bid]
+    dm.regReply(params, () => {
+        dm.replyCount(bids, () => {
+            res.redirect(`/bbs/bid/${bid}/uid/${req.body.uid}`);
         })
+    })
 });
 bRouter.get('/write', (req, res) => {
     const view = require('./view/bbsWrite');
@@ -88,7 +85,8 @@ bRouter.post('/write', (req, res) => {
     });
 });
 bRouter.get('/update/bid/:bid', (req, res) => {
-    dm.getBbsView(req.params.bid, (result) => {
+    let bid = req.params.bid
+    dm.getBbsData(bid, (result) => {
         const view = require('./view/bbsUpdate');
         let html = view.updateForm(result, req.session.uid, req.session.uname);
         res.send(html);
@@ -101,11 +99,12 @@ bRouter.post('/update/bid', (req, res) => {
     let uid = req.body.uid;
     let params = [title, content, bid];
     dm.updateBbs(params, () => {
-        res.redirect(`/view/bid/${bid}/uid/${uid}`);
+        res.redirect(`/bid/${bid}/uid/${uid}`);
     });;
 });
 bRouter.get('/delete/bid/:bid', (req, res) => {
-    dm.getBbsView(req.params.bid, (result) => {
+    let bid = req.params.bid
+    dm.getBbsData(bid, (result) => {
         const view = require('./view/bbsDelete');
         let html = view.deleteForm(result, req.session.uid, req.session.uname);
         res.send(html);
@@ -113,7 +112,8 @@ bRouter.get('/delete/bid/:bid', (req, res) => {
 
 });
 bRouter.post('/delete/bid', (req, res) => {
-    dm.deleteBbs(req.body.bid, () => {
+    let bid = req.body.bid;
+    dm.deleteBbs(bid, () => {
         res.redirect('/bbs/list/1')
     });
 });
@@ -127,4 +127,5 @@ bRouter.post('/uploadImage.do', ut.isLoggedIn, upload.single('upload'), (req, re
     };
     res.send(JSON.stringify(jsonResponse));
 });
+
 module.exports = bRouter;

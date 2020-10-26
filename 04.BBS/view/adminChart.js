@@ -1,22 +1,26 @@
-<!DOCTYPE html>
-<html lang="ko">
+///로그인창
+const template = require('./template');
 
-<head>
-    <meta charset="utf-8" />
-    <title>CKEditor 4 설치하기</title>
+module.exports.chartForm = function (_label,_data,uid, uname) {
     
-</head>
-
-<body>
-    <script src="../public/package/dist/Chart.js"></script>
-    <canvas id="myChart" width="400" height="400"></canvas><script>var ctx = document.getElementById("myChart");
+    return `
+    ${template.header()}
+    ${template.navbarUser(uid, uname)}
+    <div class="container" style="margin-top: 90px;">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+        <h2>게시물 조회수 Top6</h2>
+        <hr>
+    <script src="/package/dist/Chart.js"></script>
+    <canvas id="myChart" width="200" height="100"></canvas><script>var ctx = document.getElementById("myChart");
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            labels: ${_label},
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                label: '게시물 조회수',
+                data: ${_data},
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -47,6 +51,12 @@
         }
     });
     </script>
-</body>
-
+    </div>
+    <div class="col-2"><button onclick="location.href='/user/uid/admin/list/1'" class="btn btn-primary btn-sm" style="float:right;">회원관리</button></div></div>
+    </div>
+    </div>
+        ${template.footer()}
+    </body>
 </html>
+    `
+};

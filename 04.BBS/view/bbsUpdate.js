@@ -47,7 +47,7 @@ module.exports.updateForm = function (result, uid, uname) {
                     <tr>
                     <td colspan="3" style="text-align: right;">
                     <button type="submit" class="btn btn-warning btn-sm">수정</button>
-                    <button onclick="location.href='/bbs/view/bid/${result.bid}/uid/${result.uid}'" class="btn btn-secondary btn-sm">취소</button>
+                    <button onclick="location.href='/bbs/bid/${result.bid}/uid/${result.uid}'" class="btn btn-secondary btn-sm">취소</button>
                     </td>
                     </tr>
                     </table>

@@ -2,7 +2,7 @@
 const template = require('./template');
 
 
-module.exports.viewForm = function (result, uid, uname,rows,_mine) {
+module.exports.viewForm = function (result, uid, uname, rows, _mine) {
 
     return `
     
@@ -17,14 +17,14 @@ module.exports.viewForm = function (result, uid, uname,rows,_mine) {
         </div>
         <div class="col-3" style="text-align: right;">
             <h4>${result.uname}</h4>
-            <h6>조회 ${result.viewCount+1}&nbsp;&nbsp;댓글 ${result.replyCount}</h6>
+            <h6>조회 ${result.viewCount}&nbsp;&nbsp;댓글 ${result.replyCount}</h6>
         </div>
         <div class="col-1"></div>
         <div class="col-12"><hr></div>
         <div class="col-1"></div>
         <div class="col-10">        
                 <p>${result.content.replace(/\n/g, '<br>')}
-                ${template.bbsButton(result.bid,_mine)}
+                ${template.bbsButton(result.bid, _mine)}
                 
                 </p>
         </div>
@@ -39,7 +39,7 @@ module.exports.viewForm = function (result, uid, uname,rows,_mine) {
         <div class="col-1"></div>
         <div class="col-10">  
                 <br>
-                <form action="/bbs/view/reply" method="POST">
+                <form action="/bbs/reply" method="POST">
                 <input type="hidden" name="bid" value="${result.bid}">
                 <input type="hidden" name="uid" value="${result.uid}">
                     <div class="form-group">

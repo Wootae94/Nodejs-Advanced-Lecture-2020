@@ -5,7 +5,6 @@ const session = require('express-session');
 const Filestore = require('session-file-store')(session);
 const bRouter = require('./02.bbsRouter');
 const uRouter = require('./03.userRouter');
-const fs = require('fs');
 const { data } = require('jquery');
 const app = express();
 const dm = require('./db/db-modules');
@@ -33,16 +32,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', ut.isLoggedIn, (req, res) => {
-    if(req.session.uid == 'admin'){
-        res.redirect('/user/uid/admin/list/1')
-    } else {
-        res.redirect('/bbs/list/1')
-    }
+    res.redirect('/bbs/list/1')
 });
 
-app.get('/login', ut.alreadyLoggedIn, (req, res) => {
+app.get('/login', (req, res) => {
     const view = require('./view/login');
-    let html = view.loginForm('none', '비회원');
+    let html = view.loginForm();
     res.send(html);
 });
 
@@ -54,22 +49,13 @@ app.post('/login', (req, res) => {
         if (result === undefined) {
             let html = am.alertMsg(`Login 실패 : ID가 없습니다.`, '/login')
             res.send(html);
-        } else if (uid === 'admin') {
-            if (result.pwd === pwdHash) {
-                req.session.uid = uid;
-                req.session.uname = result.uname;
-                console.log('Login 성공');
-                req.session.save(function () {
-                    res.redirect('/user/uid/admin/list/1');
-                });
-            }
         } else {
             if (result.pwd === pwdHash) {
                 req.session.uid = uid;
                 req.session.uname = result.uname;
                 console.log('Login 성공');
                 req.session.save(function () {
-                    res.redirect('/bbs/list/1');
+                    res.redirect('/home');
                 });
             } else {
                 let html = am.alertMsg('Login 실패 : Password를 확인하세요.', '/login')

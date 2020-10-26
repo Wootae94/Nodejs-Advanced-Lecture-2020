@@ -1,12 +1,12 @@
 const template = require('./template');
 const ut = require('../04.utill');
 
-module.exports.bbsForm = function (rows, uid, uname, pageNo, startPage, endPage, totalPage,router) {
+module.exports.bbsForm = function (rows, uid, uname, pageNo, startPage, endPage, totalPage, router) {
     ///테이블 생성
     let tableRow = ''
     for (let row of rows) {
         tableRow += `<tr class="clickable text-center" 
-        onclick="location='/bbs/view/bid/${row.bid}/uid/${row.uid}'" style="cursor:pointer">
+        onclick="location='/bbs/bid/${row.bid}/uid/${row.uid}'" style="cursor:pointer">
                         <td>${row.bid}</td>
                         <td>${row.title}&nbsp&nbsp<span class="badge  badge-danger">${row.replyCount}</span></td>
                         <td>${row.uname}</td>
@@ -39,7 +39,7 @@ module.exports.bbsForm = function (rows, uid, uname, pageNo, startPage, endPage,
                 </tbody>
             </table>
             <ul class="pagination justify-content-center">
-            ${template.page(pageNo, startPage, endPage, totalPage,router)}
+            ${template.page(pageNo, startPage, endPage, totalPage, router)}
             </ul>
     </div>
     <div class="col-1"></div>

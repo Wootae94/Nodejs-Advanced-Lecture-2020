@@ -140,7 +140,7 @@ module.exports = {
         });
         conn.end();
     },
-    getBbsView: function (bid,callback) {
+    getBbsData: function (bid,callback) {
         let conn = this.getConnection();
         let sql = ` SELECT b.title as title,
                     b.uname as uname,
@@ -159,6 +159,26 @@ module.exports = {
                 console.log(error);
                 callback(results[0]);
             });
+        conn.end();
+    },
+    getBbsChart: function(callback){
+        let conn = this.getConnection();
+        let sql = `SELECT bid,
+                    title, 
+                    uname,      
+                    uid,
+                    date_format(modTime,'%Y-%m-%d %T') AS modTime, 
+                    viewCount,
+                    replyCount
+                    FROM bbs
+                    WHERE isDeleted = 0
+                    ORDER BY viewCount desc
+                    limit 6;`;
+        conn.query(sql, function (error, rows, fields) {
+            if (error)
+                console.log(error);
+            callback(rows);
+        });
         conn.end();
     },
     regBbsWrite: function(params,callback){
@@ -192,9 +212,12 @@ module.exports = {
         });
         conn.end();
     },
-    incViewCount: function(bid,callback){
+    incViewCount: function(uid,sessionUid,bid,callback){
         let conn = this.getConnection();
-        let sql = `update bbs set viewCount=viewCount+1 where bid=?;`;
+        let sql; 
+        if(uid!==sessionUid){
+            sql = `update bbs set viewCount=viewCount+1 where bid=?;`;
+        }
         conn.query(sql, bid, function (error, fields) {
             if (error)
                 console.log(error);
@@ -233,30 +256,6 @@ module.exports = {
                    SET b.replyCount = (SELECT COUNT(if(r.bid=?,r.bid,NULL))FROM reply AS r)
                    WHERE b.bid=?;`;
         conn.query(sql, bids, function (error,fields) {
-            if (error)
-                console.log(error);
-            callback();
-        });
-        conn.end();
-    },
-    replyIsMine: function(params,callback){
-        let conn = this.getConnection();
-        let sql = `UPDATE reply 
-                   SET isMine = 1
-                   WHERE uid=? and bid=?;`;
-        conn.query(sql, params, function (error,fields) {
-            if (error)
-                console.log(error);
-            callback();
-        });
-        conn.end();
-    },
-    replyNotMine: function(params,callback){
-        let conn = this.getConnection();
-        let sql = `UPDATE reply 
-                   SET isMine = 0
-                   WHERE uid=? and bid=?;`;
-        conn.query(sql, params, function (error,fields) {
             if (error)
                 console.log(error);
             callback();

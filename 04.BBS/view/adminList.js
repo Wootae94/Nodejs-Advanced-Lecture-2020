@@ -2,10 +2,11 @@
 const template = require('./template');
 
 
-module.exports.listForm = function (rows,pageNo, startPage, endPage, totalPage,router,uid, uname) {
+module.exports.listForm = function (rows, pageNo, startPage, endPage, totalPage, router, uid, uname) {
     let tableRow = ''
     for (let row of rows) {
-        tableRow += `<tr>
+        tableRow += `<tr class="clickable text-center" 
+        onclick="location='/user/uid/${row.uid}'" style="cursor:pointer">
                         <td>${row.uid}</td>
                         <td><strong>${row.uname}</strong></td>
                         <td><img style="margin-left: 30px;" src="${row.photo}" width="50"></td>
@@ -24,8 +25,9 @@ module.exports.listForm = function (rows,pageNo, startPage, endPage, totalPage,r
     <div class="col-2"></div>
     <div class="col-8">
     <h2>회원관리</h2>
+    
     <hr>
-            <table class="table table-borderless" style="text-align : center;">
+            <table class="table table-borderless table-hover" style="text-align : center;">
             <thead class="thead-light" >
                 <tr>
                     <th>uid</th>
@@ -39,10 +41,11 @@ module.exports.listForm = function (rows,pageNo, startPage, endPage, totalPage,r
         
             </table>
             <ul class="pagination justify-content-center">
-            ${template.page(pageNo, startPage, endPage, totalPage,router)}
+            ${template.page(pageNo, startPage, endPage, totalPage, router)}
             </ul>
     </div>
-    <div class="col-2"></div>
+    <div class="col-2">
+    <button onclick="location.href='/user/uid/admin/chart'" class="btn btn-primary btn-sm" style="float:right;">게시판관리</button></div>
     </div>
     </div>
     ${template.footer()}
