@@ -15,13 +15,7 @@ module.exports = {
             next();
         }
     },
-    alreadyLoggedIn: function (req, res, next) {
-        if (req.session.uid) {
-            res.redirect('/home')
-        } else {
-            next();
-        }
-    },
+
     displayTime: function (modTime){
         let today = moment().format("YYYY-MM-DD")
         let dataTime = moment(modTime).format("YYYY-MM-DD HH:mm:ss");

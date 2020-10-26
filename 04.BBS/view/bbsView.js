@@ -23,7 +23,7 @@ module.exports.viewForm = function (result, uid, uname, rows, _mine) {
         <div class="col-12"><hr></div>
         <div class="col-1"></div>
         <div class="col-10">        
-                <p>${result.content.replace(/\n/g, '<br>')}
+                <p>${result.content}
                 ${template.bbsButton(result.bid, _mine)}
                 
                 </p>

@@ -99,7 +99,7 @@ bRouter.post('/update/bid', (req, res) => {
     let uid = req.body.uid;
     let params = [title, content, bid];
     dm.updateBbs(params, () => {
-        res.redirect(`/bid/${bid}/uid/${uid}`);
+        res.redirect(`/bbs/bid/${bid}/uid/${uid}`);
     });;
 });
 bRouter.get('/delete/bid/:bid', (req, res) => {
