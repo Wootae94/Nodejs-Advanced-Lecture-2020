@@ -1,7 +1,7 @@
 ///로그인창
 const template = require('./template');
 
-module.exports.writeForm = function (uid, uname) {
+module.exports.writeForm = function (uid,uname) {
 
     return `
     
@@ -20,11 +20,13 @@ module.exports.writeForm = function (uid, uname) {
 
 </head>
 <body>
-    ${template.navbarUser(uid, uname)}
+    ${template.navbarUser(uid,uname)}
     <div class="container" style="margin-top: 90px;">
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
+        <h2>게시물 작성</h2>
+    <hr>
             <form action="/bbs/write" method="POST">
                         <label for="title">제목</label></td>
                         <input type="text" class="title" placeholder="제목" id="title"name="title">

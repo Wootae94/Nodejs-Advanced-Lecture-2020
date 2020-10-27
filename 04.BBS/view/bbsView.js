@@ -2,12 +2,12 @@
 const template = require('./template');
 
 
-module.exports.viewForm = function (result, uid, uname, rows, _mine) {
+module.exports.viewForm = function (result,uid,uname,rows,_mine) {
 
     return `
     
     ${template.header()}
-    ${template.navbarUser(uid, uname)}
+    ${template.navbarUser(uid,uname)}
     <div class="container" style="margin-top: 150px;">
     <div class="row">
         <div class="col-1"></div>

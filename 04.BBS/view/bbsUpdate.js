@@ -24,7 +24,8 @@ module.exports.updateForm = function (result, uid, uname) {
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-            
+        <h2>게시물 수정</h2>
+        <hr>   
             <form action="/bbs/update/bid" method="POST">
             <input type="hidden" name="bid" id="bid" value="${result.bid}">
             <input type="hidden" name="uid" id="uid" value="${result.uid}">

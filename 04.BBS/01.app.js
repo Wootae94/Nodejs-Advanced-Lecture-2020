@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const Filestore = require('session-file-store')(session);
+const favicon = require('express-favicon');
 const bRouter = require('./02.bbsRouter');
 const uRouter = require('./03.userRouter');
 const { data } = require('jquery');
@@ -16,6 +17,7 @@ app.use('/popper', express.static(__dirname + '/node_modules/@poperjs/core/dist/
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use('/ckeditor4', express.static(__dirname + '/node_modules/ckeditor4/'));
 app.use(express.static(__dirname + '/public'));
+app.use(favicon(__dirname + '/../public/favicon.ico'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('1q2w3e4r5t6y'));
 app.use(session({

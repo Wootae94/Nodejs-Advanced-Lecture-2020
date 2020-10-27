@@ -21,34 +21,23 @@ console.log(output.length);
 
 conn.connect();
 
-let sql = `insert into users (uid,pwd,uname,tel,email,photo) values(?,?,?,?,?);`;
-let params_list = [['gdhong', output, '홍길동'],['sslee',output,'이순신']
-,['yjchoi',output,'최영조']
-,['jwheo',output,'허진우']
-,['hobong',output,'봉현오']
-,['dhhan',output,'한동현']
-,['mgyang',output,'양민규']
-,['wgpark',output,'박원근']
-,['hsji',output,'지현성']
-,['djkim',output,'김동준']]
+/* let sql = `insert into users (uid,pwd,uname) values(?,?,?);`;
+let params_list = [['twkim',output,'김태우']
+,['wkjung',output,'정원경']
+,['ehlee',output,'이인희']
+,['wjno',output,'노원재']
+]
 
 for (let params of params_list) {
     conn.query(sql, params, function (error, fields) {
         if (error)
             console.log(error);
     });
-} 
+}   */
 
-/* insert into board(pass, name, email, title, content)
-values('1234', '홍길동' , 'nude@gmail.com', 'first writing', '안녕하세용 내이름은...');
-insert into board(pass, name, email, title, content)
-values('1234', '홍길동' , 'nude@gmail.com', '가입인사', '잘지내봐요');
-insert into board(pass, name, email, title, content)
-values('1234', '이순신' , 'lee4141@gmail.com', '고민상담', '꽃이 진다고..그대를 잊은적 없다..');
-insert into board(pass, name, email, title, content)
-values('1234', '임꺽정' , 'igj0412@gmail.com', '청첩장', '다들 오세요!'); */
-/* let sql = `INSERT INTO bbs (uname,uid,title,content) VALUES (?,?,?,?);`;
-let params_list = [ 
+
+let sql = `INSERT INTO bbs (uname,uid,title,content) VALUES (?,?,?,?);`;
+let params_list =  [ 
                     ['홍길동','gdhong', '테스트', '내용을 채우자'],
                     ['홍길동', 'gdhong','first ', '뭐라도 쓰자 '],
                     ['이순신', 'sslee','고민상담', '꽃이 진다고..그대를 잊은적 없다..'],
@@ -82,6 +71,6 @@ for (let params of params_list) {
         if (error)
             console.log(error);
     });
-} */
+}
 
-conn.end();
+conn.end(); 

@@ -1,9 +1,9 @@
 const template = require('./template');
 
-module.exports.updateForm = function (result, uid, uname) {
+module.exports.updateForm = function (result,uid,uname) {
     return `
     ${template.header()}
-    ${template.navbarUser(uid, uname)}
+    ${template.navbarUser(uid,uname)}
     <div class="container" style="margin-top: 90px;">  
     <div class="row">
     <div class="col-3"></div>
