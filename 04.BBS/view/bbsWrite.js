@@ -35,7 +35,7 @@ module.exports.writeForm = function (uid,uname) {
                         <label for="content">내용</label>
                         <textarea class="form-control" rows="7" id="content" name="content"></textarea>
                         <br>
-                        <div class="float-right"> <button type="submit" class="btn btn-primary btn-sm" >작성</button>
+                        <div class="float-right"> <button type="submit" class="btn btn-primary btn-sm" >작성</button><button onclick="location.href='/home'" class="btn btn-secondary btn-sm">뒤로</button></td>
                         </div>
             </form>
         </div>
