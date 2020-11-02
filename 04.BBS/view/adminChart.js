@@ -12,7 +12,7 @@ module.exports.chartForm = function (_label,_data,uid, uname) {
         <div class="col-8">
         <h2>게시물 조회수 Top6</h2>
         <hr>
-    <script src="/package/dist/Chart.js"></script>
+    <script src="/Chart.js/Chart.js"></script>
     <canvas id="myChart" width="200" height="100"></canvas><script>var ctx = document.getElementById("myChart");
     var myChart = new Chart(ctx, {
         type: 'bar',

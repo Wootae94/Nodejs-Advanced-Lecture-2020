@@ -18,7 +18,7 @@ function getConnection() {
     return conn;
 }
 
-/* let sqlUsers = `
+let sqlUsers = `
     create table if not exists users (
         uid varchar(20) not null primary key,
         pwd char(44) not null,
@@ -35,7 +35,7 @@ conn.query(sqlUsers, function(error, fields) {
     if (error)
         console.log(error);
 });
-conn.end(); */
+conn.end();
 
 /* let users = [
     ['admin', 'A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=', '관리자', '010-2345-6789', 'admin@hoseo.com', '/upload/blank.png'],
@@ -127,7 +127,7 @@ for (let params of replyArray) {
 }
 conn.end(); */
 
-let bbsReply = [
+/* let bbsReply = [
     [1, 1, 1012], [2, 2, 1010], [1, 1, 1006], [2, 2, 1005]
 ];
 let replyUpdate = `update bbs set viewCount=?, replyCount=? where bid=?;`;
@@ -139,4 +139,4 @@ for (let params of bbsReply) {
             console.log(error);
     });
 }
-conn.end();
+conn.end(); */
